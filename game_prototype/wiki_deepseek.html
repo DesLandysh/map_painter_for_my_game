@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гексовый прилив — Wiki</title>
+<style>
+  :root {
+    --bg: #071a1f;
+    --bg-soft: #0c262d;
+    --bg-panel: #0e2c34;
+    --bg-code: #04161b;
+    --line: rgba(232, 197, 131, 0.18);
+    --line-soft: rgba(232, 197, 131, 0.08);
+    --gold: #e8c583;
+    --gold-bright: #f6dda5;
+    --cream: #f1ecdb;
+    --cream-dim: #cfc8b5;
+    --muted: rgba(218, 229, 218, 0.55);
+    --muted-soft: rgba(218, 229, 218, 0.32);
+    --teal: #7ed0c1;
+    --coral: #e07d5d;
+    --serif: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 80% 10%, rgba(232, 197, 131, 0.06), transparent 55%),
+      radial-gradient(ellipse at 10% 90%, rgba(126, 208, 193, 0.05), transparent 55%),
+      var(--bg);
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(7, 26, 31, 0.94);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+  .head-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 28px 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--gold-bright);
+    letter-spacing: 0.02em;
+  }
+  .logo small {
+    display: block;
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  nav {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-left: auto;
+    max-width: 1180px;
+    padding: 0 28px 12px;
+    width: 100%;
+  }
+  nav button {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--cream-dim);
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  nav button:hover { background: rgba(232, 197, 131, 0.06); color: var(--gold-bright); }
+  nav button.active {
+    color: var(--gold-bright);
+    border-color: var(--line);
+    background: rgba(232, 197, 131, 0.08);
+  }
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 28px 100px;
+  }
+  section.tab { display: none; animation: fadein 0.25s ease; }
+  section.tab.active { display: block; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 400;
+    margin: 0 0 10px;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    margin: 40px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--gold-bright);
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--teal);
+    margin: 26px 0 10px;
+  }
+  h4 { font-size: 14px; margin: 18px 0 8px; color: var(--gold); }
+  p { margin: 8px 0; color: var(--cream-dim); }
+  code, .mono { font-family: var(--mono); font-size: 12.5px; }
+  code {
+    background: var(--bg-code);
+    color: var(--gold-bright);
+    padding: 1px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--line-soft);
+  }
+  pre {
+    background: var(--bg-code);
+    color: #c8dcd2;
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; }
+  ul, ol { padding-left: 22px; color: var(--cream-dim); }
+  li { margin: 4px 0; }
+  a { color: var(--teal); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+  th {
+    background: rgba(232, 197, 131, 0.06);
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code { font-size: 11.5px; }
+
+  .pill {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-family: var(--mono);
+    background: rgba(232, 197, 131, 0.1);
+    color: var(--gold-bright);
+    border: 1px solid var(--line);
+    margin-right: 4px;
+  }
+  .pill.green { background: rgba(126, 208, 193, 0.1); color: var(--teal); border-color: rgba(126, 208, 193, 0.25); }
+  .pill.red { background: rgba(224, 125, 93, 0.12); color: var(--coral); border-color: rgba(224, 125, 93, 0.28); }
+
+  /* ---- Карточки функций ---- */
+  .fn-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+  }
+  .fn-card .sig {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--gold-bright);
+    display: block;
+    margin-bottom: 6px;
+    word-break: break-word;
+  }
+  .fn-card .sig b { color: var(--teal); font-weight: 500; }
+  .fn-card p { margin: 6px 0 0; font-size: 13px; }
+  .fn-card pre { margin: 8px 0 0; font-size: 11.5px; padding: 10px 12px; }
+
+  /* ---- Палитра ---- */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 16px 0 24px;
+  }
+  .swatch {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .swatch-color { height: 62px; }
+  .swatch-body { padding: 8px 10px; }
+  .swatch-body b { color: var(--cream); font-weight: 500; display: block; }
+  .swatch-body code { font-size: 11px; }
+  .swatch-body small { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
+
+  /* ---- Блок-схемы ---- */
+  .diagram {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 22px 20px;
+    margin: 18px 0;
+    overflow-x: auto;
+  }
+  .diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* ---- Список оптимизаций ---- */
+  .opt {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-left: 3px solid var(--teal);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 10px 0;
+  }
+  .opt h4 { margin: 0 0 6px; color: var(--gold-bright); }
+  .opt p, .opt li { font-size: 13px; }
+  .opt .impact {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 1px 8px;
+    border-radius: 4px;
+    background: rgba(224, 125, 93, 0.1);
+    border: 1px solid rgba(224, 125, 93, 0.3);
+    color: var(--coral);
+    letter-spacing: 0.04em;
+  }
+  .opt .impact.mid { background: rgba(232, 197, 131, 0.1); color: var(--gold); border-color: var(--line); }
+  .opt .impact.low { background: rgba(126, 208, 193, 0.08); color: var(--teal); border-color: rgba(126, 208, 193, 0.25); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 760px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .head-inner { padding-left: 16px; padding-right: 16px; }
+    nav { padding-left: 16px; padding-right: 16px; }
+    main { padding-left: 16px; padding-right: 16px; }
+    h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="logo">Гексовый прилив<small>wiki · внутренняя документация</small></div>
+  </div>
+  <nav id="tabs">
+    <button class="active" data-tab="overview">Обзор</button>
+    <button data-tab="utils">Утилиты и формулы</button>
+    <button data-tab="world">Генерация мира</button>
+    <button data-tab="render">Рендеринг и шейдеры</button>
+    <button data-tab="logic">Игровая логика</button>
+    <button data-tab="flow">Блок-схемы</button>
+    <button data-tab="palette">Палитра</button>
+    <button data-tab="optimize">Оптимизация</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- ОБЗОР                                                        -->
+<!-- ============================================================ -->
+<section class="tab active" id="tab-overview">
+  <h1>Гексовый прилив</h1>
+  <p>Изометрическая одиссея: маленькая лодка плывёт по «живому» морю, собранному из ~25 гексов в высоту в каждом тайле. Цель — собрать 8 искр. Мир реагирует на лодку (волны, след, рикошет от берегов), ветер сносит её и меняет погоду.</p>
+
+  <h2>Структура проекта</h2>
+  <table>
+    <tr><th>Файл</th><th>Роль</th></tr>
+    <tr><td><code>index.html</code></td><td>DOM-разметка, HUD, стартовый и финальный экраны, мобильный pad, кнопки</td></tr>
+    <tr><td><code>style.css</code></td><td>Вся визуальная оболочка: шрифты, HUD, старт-скрин, палитра UI, адаптив</td></tr>
+    <tr><td><code>game.js</code></td><td>Игровая логика, рендер, физика лодки, ветер, шейдеры, звук</td></tr>
+    <tr><td><code>three.min.js</code></td><td>Three.js (r? — используется API v150+ с <code>outputColorSpace</code>)</td></tr>
+  </table>
+
+  <h2>Ключевые сущности</h2>
+  <table>
+    <tr><th>Объект</th><th>Назначение</th><th>Где живёт</th></tr>
+    <tr><td><code>state</code></td><td>Игровое состояние: позиция/скорость лодки, очки, таймер, трейл, собранные искры</td><td>глобальный</td></tr>
+    <tr><td><code>wind</code></td><td>Глобальная модель ветра: угол, сила, порывы, сезоны</td><td>глобальный</td></tr>
+    <tr><td><code>cameraRig</code></td><td>Зум камеры и флаг инициализации</td><td>глобальный</td></tr>
+    <tr><td><code>oceanUniforms</code></td><td>Uniform-ы шейдера океана (время, лодка, трейл, цвета)</td><td>глобальный</td></tr>
+    <tr><td><code>keys</code></td><td>Карта клавиш (WASD/Shift/Arrow)</td><td>глобальный</td></tr>
+    <tr><td><code>keyVectors</code></td><td>Единичные векторы «вперёд» и «вправо» в плоскости XZ для изометрии</td><td>глобальный</td></tr>
+    <tr><td><code>Sound</code></td><td>Закрытие: AudioContext, шум океана, аккорды искр и финала</td><td>IIFE</td></tr>
+    <tr><td><code>tiles[]</code>, <code>landTiles[]</code>, <code>oceanCols[]</code>, <code>landCols[]</code></td><td>Сгенерированные данные карты</td><td>глобальный</td></tr>
+    <tr><td><code>state.collectibles[]</code></td><td>8 искр (Icosahedron + halo + ring)</td><td>глобальный</td></tr>
+    <tr><td><code>boatVisual</code></td><td>Группа мешей лодки + tilt-группа для качки</td><td>глобальный</td></tr>
+  </table>
+
+  <h2>Порядок инициализации</h2>
+  <ol>
+    <li><code>renderer</code> + <code>scene</code> + <code>camera</code> (ортографическая).</li>
+    <li>Свет: Hemisphere + sun (Directional, тени) + два fill'а.</li>
+    <li>Текстуры: glow, foam (радиальные градиенты).</li>
+    <li>Сетка тайлов, классификация (вода / суша / зона).</li>
+    <li><code>addSlab</code> — 4 подложки диорамы.</li>
+    <li><code>createColumnGeometry</code> (25 полос) → <code>landMesh</code>.</li>
+    <li><code>createOceanColumnGeometry</code> (1 полоса) → <code>oceanMesh</code> + шейдер.</li>
+    <li>Декор: деревья (Instanced), камни (Instanced), пальмы, домики, маяк.</li>
+    <li>Частицы, след (ribbon), лодка, искры.</li>
+    <li>Звук по кнопке play, камера → <code>fitCamera()</code>, затем <code>renderer.setAnimationLoop(animate)</code>.</li>
+  </ol>
+
+  <h2>Единицы измерения</h2>
+  <ul>
+    <li>1 юнит ≈ 1 метр. <code>HEX_R = 0.155</code> — радиус одного гекса.</li>
+    <li>Тайл = 5×5 гексов. <code>TILE_W = 5·√3·R ≈ 1.34</code>, <code>TILE_D = 7.5·R = 1.1625</code>.</li>
+    <li>Карта: <code>NX = 100</code>, <code>NZ = 40</code> тайлов → <code>MAP_W ≈ 134</code>, <code>MAP_D ≈ 46.5</code>.</li>
+    <li>Скорость лодки: 0…5.1 (юнитов/сек). Камера: 0.9 (обзор) … 2.4 (крупный план).</li>
+  </ul>
+
+  <h2>Debug-режим</h2>
+  <p>При открытии <code>index.html?debug</code> создаётся <code>window.__hexDebug</code> с методами <code>advance(seconds)</code> (шаг симуляции 1/60 без рендера) и ссылками на <code>state</code>, <code>keys</code>, <code>camera</code>, <code>cameraRig</code>, <code>oceanUniforms</code>. Удобно для тестов и профилирования.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- УТИЛИТЫ                                                     -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-utils">
+  <h1>Утилиты и формулы</h1>
+
+  <h2>Математические хелперы</h2>
+
+  <div class="fn-card">
+    <span class="sig"><b>clamp</b>(v, a, b) → number</span>
+    <p>Ограничивает значение отрезком [a, b].</p>
+    <pre><code>Math.max(a, Math.min(b, v))</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>lerp</b>(a, b, t) → number</span>
+    <p>Линейная интерполяция. t — обычно 0…1.</p>
+    <pre><code>a + (b - a) * t</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>smoothstep</b>(a, b, x) → number ∈ [0, 1]</span>
+    <p>Кубическое сглаживание: даёт «мягкие» края без рывков.</p>
+    <pre><code>t = clamp((x - a) / (b - a), 0, 1);
+return t * t * (3 - 2 * t);</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>expDamp</b>(current, target, lambda, dt) → number</span>
+    <p>Экспоненциальное сглаживание, независимое от FPS (frame-rate independent). λ — «жёсткость» (больше = быстрее догоняет).</p>
+    <pre><code>current + (target - current) * (1 - Math.exp(-lambda * dt))</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>dampAngle</b>(current, target, lambda, dt) → number</span>
+    <p>То же, но для углов. Учитывает переход через ±π (wrap на короткую дугу).</p>
+    <pre><code>delta = atan2(sin(target - current), cos(target - current));
+return current + delta * (1 - exp(-lambda * dt));</code></pre>
+  </div>
+
+  <h2>Генераторы случайности</h2>
+
+  <div class="fn-card">
+    <span class="sig"><b>mulberry32</b>(seed) → () =&gt; number ∈ [0,1)</span>
+    <p>Детерминированный PRNG на 32-битных операциях. Используется для декора, чтобы внешний вид карты был стабильным при перезагрузке.</p>
+    <pre><code>a = (a + 0x6D2B79F5) | 0;
+t = Math.imul(a ^ (a >>> 15), 1 | a);
+t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+return ((t ^ (t >>> 14)) >>> 0) / 4294967296;</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>hash2</b>(x, z) → number ∈ [0,1)</span>
+    <p>Быстрый псевдо-хэш на синусе. Основа для value noise.</p>
+    <pre><code>v = sin(x * 127.1 + z * 311.7) * 43758.5453123;
+return v - floor(v);</code></pre>
+  </div>
+
+  <div class="fn-card">
+    <span class="sig"><b>valueNoise</b>(x, z) → number ∈ [0,1)</span>
+    <p>Value-noise с bilinear-интерполяцией и smoothstep'ом. Даёт «облачную» карту высот и шума ветра.</p>
+    <pre><code>xi = floor(x); zi = floor(z); xf = x-xi; zf = z-zi;
+u = xf*xf*(3-2*xf); v = zf*zf*(3-2*zf);
+a = hash2(xi, zi); b = hash2(xi+1, zi);
+c = hash2(xi, zi+1); d = hash2(xi+1, zi+1);
+return lerp(lerp(a,b,u), lerp(c,d,u), v);</code></pre>
+  </div>
+
+  <h2>Форматирование</h2>
+  <div class="fn-card">
+    <span class="sig"><b>formatTime</b>(seconds) → "M:SS"</span>
+    <p>Для отображения таймера в финальном экране.</p>
+  </div>
+
+  <h2>Константы</h2>
+  <table>
+    <tr><th>Имя</th><th>Значение</th><th>Смысл</th></tr>
+    <tr><td><code>TAU</code></td><td><code>2π</code></td><td>Полный оборот</td></tr>
+    <tr><td><code>NX / NZ</code></td><td>100 / 40</td><td>Число тайлов по X / Z</td></tr>
+    <tr><td><code>HEX_R</code></td><td>0.155</td><td>Радиус гекса</td></tr>
+    <tr><td><code>HEX_SX</code></td><td>√3·R ≈ 0.2685</td><td>Горизонтальный шаг гексов</td></tr>
+    <tr><td><code>HEX_SZ</code></td><td>1.5·R = 0.2325</td><td>Вертикальный шаг гексов</td></tr>
+    <tr><td><code>TILE_W</code></td><td>5·HEX_SX ≈ 1.342</td><td>Ширина тайла (5 гексов)</td></tr>
+    <tr><td><code>TILE_D</code></td><td>7.5·R = 1.1625</td><td>Глубина тайла (5 гексов)</td></tr>
+    <tr><td><code>MAP_W / MAP_D</code></td><td>≈134 / ≈46.5</td><td>Размер карты</td></tr>
+    <tr><td><code>OCEAN_TRAIL_SAMPLES</code></td><td>12</td><td>Длина трейла, уходящая в шейдер</td></tr>
+    <tr><td><code>wakeMax</code></td><td>24</td><td>Максимум точек ribbon-трейла</td></tr>
+    <tr><td><code>particleCount</code></td><td>120</td><td>Пул частиц</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- ГЕНЕРАЦИЯ МИРА                                               -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-world">
+  <h1>Генерация мира</h1>
+
+  <h2>Шаг 1 — сетка тайлов</h2>
+  <p>Центр карты в (0, 0). Каждый тайл — 5×5 гексов. Координаты:</p>
+  <pre><code>tileX(tx) = (tx - (NX-1)/2) * TILE_W
+tileZ(tz) = (tz - (NZ-1)/2) * TILE_D
+idxOf(tx, tz) = tz * NX + tx</code></pre>
+
+  <h2>Шаг 2 — острова (ISLANDS)</h2>
+  <p>Массив ручных островов. У каждого: <code>x, z</code> (центр), <code>r</code> (базовый радиус), <code>seed</code> (смещение фазы шума), <code>peak</code> (0…1.2, высота), <code>name</code>. Пример: Юкатан, Куба, Гаити, Малые Антильские…</p>
+
+  <h3>Форма берега (wobble)</h3>
+  <p>Граница острова — не круг, а сумма синусов от полярного угла:</p>
+  <pre><code>wobble(θ) = 1
+          + 0.25·sin(3θ + seed)
+          + 0.15·sin(5θ − 1.7·seed)
+          + 0.08·sin(8θ + 1.4)
+          + 0.05·sin(13θ + 2.3·seed)
+
+edge = r · wobble(θ)
+q    = dist / edge   // 0 = центр, 1 = берег</code></pre>
+  <p>Тайл считается сушей, если <code>dist &lt; edge</code> хотя бы у одного острова. Приоритет — минимальный <code>q</code>.</p>
+
+  <h2>Шаг 3 — классификация тайлов</h2>
+  <table>
+    <tr><th>Условие</th><th>zone</th><th>Высота (base)</th></tr>
+    <tr><td><code>q &gt; 0.79</code></td><td><code>sand</code></td><td>0.30 + micro·0.14</td></tr>
+    <tr><td><code>0.56 &lt; q ≤ 0.79</code></td><td><code>grass</code></td><td>0.54 + micro·0.17</td></tr>
+    <tr><td><code>0.39 &lt; q ≤ 0.56</code></td><td><code>hill</code></td><td>0.84 + micro·0.29 + (0.56 − q)·0.7</td></tr>
+    <tr><td><code>q ≤ 0.39</code></td><td><code>peak</code></td><td>1.08 + micro·0.35</td></tr>
+  </table>
+  <p>Плюс <code>peakRise</code> — плавный «вулкан» в центре острова:</p>
+  <pre><code>peakRange = r · 0.5
+peakT     = clamp(1 − dist/peakRange, 0, 1)
+peakRise  = (3.15 + r·0.24) · peak · peakT<sup>1.62</sup>
+height   += peakRise</code></pre>
+  <p><b>micro</b> — сумма двух value-noise: крупный (×0.58) + мелкий (×0.22).</p>
+
+  <h3>Цветовые переходы</h3>
+  <ul>
+    <li><b>rockBlend</b> = <code>smoothstep(1.05, 3.1, peakRise)</code> — выше 1.05 подмешивает <code>rock→rockDark</code>.</li>
+    <li><b>snowBlend</b> = <code>smoothstep(3.85, 4.75, height) · (0.68 + tint·0.28)</code> — на вершинах.</li>
+    <li><b>tint</b> = <code>valueNoise(x·4.7 + 10.2, z·4.7 − 3.8)</code> — стабильный «разброс» цвета.</li>
+    <li>Плюс HSL-смещение: <code>offsetHSL((tint−0.5)·0.018, (tint−0.5)·0.04, (tint−0.5)·0.055)</code>.</li>
+  </ul>
+
+  <h3>Сглаживание краёв (falloff)</h3>
+  <pre><code>if (tile.edge && tile.q &gt; 0.7) {
+  blend = smoothstep(0.7, 1.0, tile.q);
+  height    = lerp(height, 0.1, blend · 0.5);
+  baseColor.lerp(palette.mid, blend · 0.3);
+}</code></pre>
+  <p>Без этого берег обрывался бы в море вертикальной «стеной».</p>
+
+  <h2>Шаг 4 — гексовые колонки</h2>
+  <p>В каждом тайле 5×5 гексов (25 колонок). Локальные координаты:</p>
+  <pre><code>x = tileX(tx) + (col − 2)·HEX_SX + ((globalRow % 2) ? HEX_SX/2 : 0) − HEX_SX/4
+z = tileZ(tz) + (row − 2)·HEX_SZ
+где globalRow = tz·5 + row</code></pre>
+  <p>Так столбики соседних тайлов сшиваются в непрерывную пчелиную соту — без швов.</p>
+
+  <h2>Шаг 5 — меши</h2>
+  <table>
+    <tr><th>Меш</th><th>Геометрия</th><th>Инстансы</th></tr>
+    <tr><td><code>oceanMesh</code></td><td>1 призма на гекс (6 боковых + 6 верхних), без 25 полос — полосы рисуются в шейдере</td><td>≈ 80 000+ (по числу водных гексов)</td></tr>
+    <tr><td><code>landMesh</code></td><td>25 полос в высоту с вершинным цветом (bandLight 0.56…0.66)</td><td>≈ 15 000 – 20 000</td></tr>
+    <tr><td><code>foundationMesh</code></td><td>куб на тайл, цвет = zone-цвет</td><td>≈ 600 – 800</td></tr>
+  </table>
+  <p><b>landMesh</b> — полноценные 25 полос, чтобы переход по высоте читался «бахромой». Цвет полос чередуется: <code>bandLight = 0.56 + (1 − b/bands)·0.075 + (b % 2 ? 0.025 : 0)</code>.</p>
+  <p><b>oceanMesh</b> — упрощённая призма. Полосы и цвет верх/низ считаются прямо во фрагментном шейдере по <code>vLocalH = clamp(-position.y, 0, 1)</code>.</p>
+
+  <h2>Шаг 6 — декор</h2>
+  <ul>
+    <li><b>Деревья</b> — на тайлах <code>grass/hill</code> с вероятностью ~58%/38% и <code>avgHeight &lt; 2.15</code>. InstancedMesh: <code>trunks</code>, <code>lowerCrowns</code>, <code>upperCrowns</code>. Цвет кроны = <code>palette.grass.lerp(palette.hillLight, 0.12…0.57)</code>.</li>
+    <li><b>Камни</b> — InstancedMesh Dodecahedron с рандомным поворотом.</li>
+    <li><b>Пальмы</b> — 4 шт. вручную, каждая = 3 сегмента ствола + 7 листьев-конусов + 3 кокоса. Не инстансится (мало штук).</li>
+    <li><b>Домики</b> — 2 шт.: box-стены + конус-крыша + труба + дверь + окно (glow-панель).</li>
+    <li><b>Маяк</b> — 1 шт.: 7 цилиндров + glow-sprite + конус-луч + PointLight. Луч вращается в основном цикле.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- РЕНДЕРИНГ                                                   -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-render">
+  <h1>Рендеринг и шейдеры</h1>
+
+  <h2>Рендерер</h2>
+  <pre><code>WebGLRenderer({
+  antialias: true, alpha: true, powerPreference: 'high-performance'
+})
+pixelRatio = min(devicePixelRatio, innerWidth &lt; 720 ? 1.65 : 2)
+outputColorSpace   = SRGBColorSpace
+toneMapping        = ACESFilmicToneMapping
+toneMappingExposure = 1.12
+shadowMap.enabled  = true
+shadowMap.type     = PCFSoftShadowMap</code></pre>
+
+  <h2>Камера</h2>
+  <pre><code>OrthographicCamera(left, right, top, bottom, 0.1, 180)
+CAMERA_DIR = (1, 1, 1).normalize()
+camera.position = cameraFocus + CAMERA_DIR · 62
+camera.lookAt(cameraFocus)</code></pre>
+  <p>Не «настоящая» изометрия, а псевдоизометрия — 3/4 вид сверху. Дистанция 62 велика, поэтому объекты почти не «качаются» от перспективы.</p>
+  <p><b>viewH</b>: 58 (портрет), 48 (квадрат), 36 (широкий) — <code>state.viewH</code>, пересчитывается в <code>fitCamera()</code> при ресайзе.</p>
+
+  <h2>Свет</h2>
+  <table>
+    <tr><th>Источник</th><th>Позиция</th><th>Цвет</th><th>Интенсивность</th></tr>
+    <tr><td>HemisphereLight</td><td>—</td><td>sky <code>#d8f2ea</code> / ground <code>#10252c</code></td><td>1.4</td></tr>
+    <tr><td>sun (Directional, тени)</td><td>(-13, 23, 9) относительно фокуса</td><td>#ffe4b9</td><td>2.55</td></tr>
+    <tr><td>fillLight</td><td>(14, 9, -15)</td><td>#7ad9d0</td><td>0.55</td></tr>
+    <tr><td>warmFill</td><td>(9, 6, 18)</td><td>#ffbe84</td><td>0.30</td></tr>
+  </table>
+  <p>Тени: 2048×2048, ортографический frustum ±27, bias −0.00055, normalBias 0.025. <b>Каждый кадр</b> <code>sun.position</code> переезжает вместе с <code>cameraFocus</code> — так тень «следует» за лодкой.</p>
+
+  <h2>Шейдер океана</h2>
+  <p>Реализован через <code>MeshStandardMaterial.onBeforeCompile</code> — это <b>не</b> отдельный ShaderMaterial, а патч стандартного материала Three.js.</p>
+
+  <h3>Uniforms</h3>
+  <table>
+    <tr><th>Имя</th><th>Тип</th><th>Обновляется</th></tr>
+    <tr><td><code>uTime</code></td><td>float</td><td>каждый кадр (<code>elapsed</code>)</td></tr>
+    <tr><td><code>uBoat</code></td><td>vec4 (x, z, heading, speed)</td><td>каждый кадр</td></tr>
+    <tr><td><code>uTrail[12]</code></td><td>vec4[] (x, z, age, strength)</td><td>каждый кадр, выборка подвыборки из <code>state.trail</code></td></tr>
+    <tr><td><code>uTrailCount</code></td><td>float</td><td>каждый кадр</td></tr>
+    <tr><td><code>uDeep / uMid / uCrest / uFoamColor</code></td><td>vec3</td><td>один раз (палитра)</td></tr>
+  </table>
+
+  <h3>Атрибуты на инстанс</h3>
+  <ul>
+    <li><code>aPhase</code> — фаза волны (стабильный хэш от позиции).</li>
+    <li><code>aShade</code> — затемнение от крупного/мелкого шума (0.94…1.05).</li>
+  </ul>
+
+  <h3>Вершинный шейдер — волновая формула</h3>
+  <pre><code>// проекция мировой позиции на направление ветра
+alongWind   = dot(instXZ, (sin(windAngle), cos(windAngle)))
+acrossWind  = dot(instXZ, (-cos(windAngle), sin(windAngle)))
+
+// две синусоиды — фоновое волнение
+ambient = sin(uTime·1.08 + alongWind·0.55 + aPhase)·0.09
+        + sin(uTime·1.63 + acrossWind·0.22 + 0.9 + aPhase·0.31)·0.05
+
+target = ambient
+
+// влияние лодки (в радиусе √18 ≈ 4.24)
+hull  = exp(-d² · 1.25)                       // −0.255
+bow   = exp(-(d − 1.08)² · 4.54)              // +0.375
+ring  = exp(-(d − 1.90)² · 1.92)              // +0.088
+speedK = 0.58 + boatSpeed·0.12
+
+target += -0.255 · hull · speedK
+target += +0.375 · bow  · speedK · (0.68 + max(0,ahead)·0.38)
+target += +0.088 · ring · speedK
+
+// трейл
+для i in trail[0..count):
+  decay  = exp(-age·0.92) · strength
+  ripple = sin(td·8.4 − age·7.2) · exp(-td·1.24)
+  target += ripple · 0.208 · decay
+
+// clamp + squash
+wave    = clamp(target, -0.43, 0.6)
+squash  = max(0, -wave)·0.3 + clamp(foam, 0, 0.75)·0.14
+y      += wave / 2.1
+xz     *= 1 + squash</code></pre>
+
+  <h3>Фрагментный шейдер — цвет</h3>
+  <pre><code>depthT = clamp((vWave + 0.18) / 0.42, 0, 1)
+water  = mix(deep, mid,   smoothstep(0.0, 0.52, depthT))
+water  = mix(water, crest, smoothstep(0.5, 1.0, depthT))
+если vWave &gt; 0.075 → подмешать foam (0.54)
+если vFoam &gt; 0.015 → подмешать foam (vFoam·0.88)
+
+// полосы (banding) по vLocalH — 25 штук, «шов» через smoothstep
+bandCoord = fract(vLocalH · 25)
+bandEdge  = min(bandCoord, 1 - bandCoord)
+seam      = mix(0.70, 1.0, smoothstep(0, 0.11, bandEdge))
+bandTint  = mix(0.93, 1.015, mod(floor(vLocalH · 25), 2))
+sideTone  = mix(seam·bandTint, 1.055, vTop)   // верх светлее
+
+diffuseColor.rgb *= water · sideTone · vShade</code></pre>
+
+  <h2>Земля</h2>
+  <p><code>MeshStandardMaterial({ vertexColors: true, roughness: 0.88, flatShading: true })</code> — цвет запекается в атрибут <code>instanceColor</code> при <code>setColorAt</code>. 25 полос в геометрии дают полосатость как у океана, но через атрибут <code>color</code> в вершинах.</p>
+
+  <h2>Частицы (Points)</h2>
+  <ul>
+    <li><code>ShaderMaterial</code> с текстурой пены.</li>
+    <li><code>gl_PointSize = clamp(aSize · uScale, 1, 64)</code>, где <code>uScale = particleScaleBase · cameraRig.zoom</code>.</li>
+    <li><code>particleScaleBase = (drawBuffer.y / viewH) · 1.45</code> — автоматически уменьшает частицы при отдалении.</li>
+    <li>Blending: Additive, <code>depthWrite: false</code>, <code>toneMapped: false</code>.</li>
+  </ul>
+
+  <h2>След (ribbon)</h2>
+  <p>24 точки × 3 вершины. Каждая точка = <code>{x, z, age, strength}</code>. Строится каждые 55 мс при <code>boatSpeed &gt; 0.25</code>, живёт до 3.1 с. <b>Рендерится поверх воды</b> (<code>renderOrder = 3</code>, additive).</p>
+  <pre><code>fade  = (1 − age/3.15)^1.45 · strength
+width = (0.075 + age·0.06) · (0.58 + speed/4.8)
+y     = 0.45 + sin(age·2.1 + i)·0.007</code></pre>
+
+  <h2>Мотыльки / mote</h2>
+  <p>52 точки, <code>PointsMaterial</code> с glow-текстурой. Каждая колеблется по sin/cos вокруг своей базовой позиции.</p>
+
+  <h2>Лодка</h2>
+  <p>Группа из ~15 мешей: hull (ExtrudeGeometry), topPlate, deck, планки, мачта, гик, парус (BufferGeometry с ручной триангуляцией), флаг, rope, бушприт, ящик, каюта, фонарь (стекло + glow), PointLight, контактная тень.</p>
+  <p><b>Иерархия</b>: <code>root</code> (позиция + heading) → <code>tilt</code> (roll/pitch от скорости и поворотов) → меши.</p>
+  <p>Формула качки:</p>
+  <pre><code>targetRoll  = clamp(-turnRate·0.045, -0.17, 0.17) + sin(t·1.13)·0.018
+targetPitch = clamp(speed/5.1·0.09, 0, 0.09) + sin(t·1.47+0.4)·0.012
+roll  = expDamp(currentRoll,  targetRoll,  4.5, dt)
+pitch = expDamp(currentPitch, -targetPitch, 4.5, dt)</code></pre>
+
+  <h2>Искры</h2>
+  <p>Icosahedron + Sprite(glow) + Torus. Плавное покачивание <code>y = baseY + sin(t·1.45 + phase)·0.08</code>. При сборе — <code>collectT</code> 0.42 с, group.scale растёт до 2.8, y уходит вверх, opacity затухает.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- ИГРОВАЯ ЛОГИКА                                              -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-logic">
+  <h1>Игровая логика</h1>
+
+  <h2>Ввод</h2>
+  <ul>
+    <li><b>Клавиатура</b>: <code>KeyW/A/S/D</code>, <code>ArrowUp/Down/Left/Right</code>, <code>ShiftLeft/Right</code> (boost), <code>KeyR</code> (reset).</li>
+    <li><b>Курс</b> строится так: <code>W</code> даёт вектор «вперёд» <code>(-1,-1)/√2</code>, <code>D</code> — «вправо» <code>(1,-1)/√2</code>. То есть ввод мапится на изометрию.</li>
+    <li><b>Тач</b>: <code>mobilePad</code> → те же <code>keys[code]</code>, <code>touch-action: none</code> на кнопках.</li>
+    <li>На <code>blur</code> все клавиши сбрасываются.</li>
+  </ul>
+
+  <h2>Физика лодки (updateBoat)</h2>
+  <pre><code>// 1. Ввод → желаемый курс
+dir = keyVectors.right·ix + keyVectors.forward·iz, normalize
+targetHeading = atan2(dir.x, dir.y)
+heading = dampAngle(heading, targetHeading, 6.2, dt)
+
+// 2. Собственная скорость вдоль курса
+boost ? 5.1 : 3.25
+boatSpeed = expDamp(boatSpeed, targetSpeed, hasInput ? 3.2 : 2.0, dt)
+
+// 3. Ветер сносит
+windAtBoat = getWindAt(boat.x, boat.z)
+driftVx = windAtBoat.x · wind.driftFactor   // 0.32
+driftVz = windAtBoat.z · wind.driftFactor
+selfVx  = sin(heading) · boatSpeed
+selfVz  = cos(heading) · boatSpeed
+desiredVx = selfVx + driftVx
+desiredVz = selfVz + driftVz
+
+// 4. Скорость с инерцией
+vx = expDamp(vx, desiredVx, 3.8, dt)
+vz = expDamp(vz, desiredVz, 3.8, dt)
+
+// 5. Коллизия — отдельно по осям (slide along walls)
+nextX = x + vx·dt; if (canSail(nextX, z)) x = nextX; else vx *= -0.15
+nextZ = z + vz·dt; if (canSail(x, nextZ)) z = nextZ; else vz *= -0.15</code></pre>
+
+  <h2>Коллизия (canSail)</h2>
+  <ul>
+    <li>Проверка выхода за границы карты (margin 0.68).</li>
+    <li>Проверка 10 точек по окружности радиуса 0.67 вокруг лодки → <code>isLandPoint</code>.</li>
+    <li><b>Раздельно по осям</b> — это даёт «скольжение» вдоль берега вместо застревания.</li>
+    <li>При ударе — <code>emitCollisionFoam</code> с кулдауном 170 мс (защита от флуда частиц).</li>
+  </ul>
+
+  <h2>Ветер (getWindAt / updateWind)</h2>
+  <h3>Локальная вариация</h3>
+  <pre><code>localOffset   = (valueNoise(x·0.035+7.1, z·0.035+3.3) − 0.5) · 2 · 0.45
+localStrength = 0.75 + valueNoise(x·0.021+99, z·0.021+77) · 0.5
+angle    = wind.angle + localOffset
+strength = wind.strength · localStrength</code></pre>
+
+  <h3>Смена сезона</h3>
+  <ul>
+    <li>Каждые 40–80 с (счётчик <code>seasonTimer</code>).</li>
+    <li><code>targetAngle += (rand() − 0.5) · π · 0.9</code> — плавный поворот до ±45°.</li>
+    <li><code>targetStrength = 0.25 + rand() · 0.65</code>.</li>
+    <li>Приближение: <code>angle += delta · (1 − exp(−0.09·dt))</code> — очень мягкое.</li>
+    <li>Порывы: <code>gustTimer = 4…12 с</code>; на 1.5 с сила подскакивает до <code>min(1, strength · (1.3…1.7))</code>.</li>
+  </ul>
+
+  <h3>Проекция на экран (updateWindIndicator)</h3>
+  <pre><code>windVec3D = (getWindAt.x, 0, getWindAt.z)
+screenVec = windVec3D.clone().project(camera)
+angleRad  = atan2(screenVec.x, -screenVec.y)
+deg       = angleRad·180/π + 90      // +90 — калибровка под изометрию
+deg       = ((deg % 360) + 360) % 360
+windArrowEl.setAttribute('transform', `rotate(${deg} 24 24)`)</code></pre>
+  <p><b>+90°</b> — потому что <code>project()</code> даёт Y вверх, а SVG — Y вниз; плюс поворот камеры. Калибровка подобрана на глаз.</p>
+
+  <h2>След и пена</h2>
+  <ul>
+    <li><b>Трейл</b> пишется каждые 55 мс, точки живут до 3.1 с. Хранится в <code>state.trail</code>, обрезается до <code>wakeMax</code>.</li>
+    <li><b>Ribbon</b> (24 точки × 3 вершины) — геометрический след, лежит на воде.</li>
+    <li><b>Частицы</b> — <code>emitWakeParticles</code>: спавн с вероятностью <code>boatSpeed/4.8</code>, скорость зависит от <code>boatSpeed</code>.</li>
+    <li><b>Коллизионная пена</b> — 7 частиц с кулдауном 170 мс + <code>navigator.vibrate(8)</code> на мобилке.</li>
+  </ul>
+
+  <h2>Сбор искр</h2>
+  <pre><code>if (!started || finished) return;
+dx = boat.x − c.x; dz = boat.z − c.z;
+if (dx² + dz² &lt; 1.32²) collect(c)</code></pre>
+  <p>Радиус 1.32 = 8.5 радиусов гекса — комфортный «магнит». После 8-й искры <code>state.finished = true</code>, через 1.2 с — end-screen.</p>
+
+  <h2>Камера (updateCamera)</h2>
+  <pre><code>speedT     = smoothstep(0.04, 4.2, boatSpeed)
+targetZoom = lerp(2.4, 0.9, speedT)
+zoom       = expDamp(zoom, targetZoom, 1.75, dt)
+
+lead       = 0.18
+boatFocus  = (boat.x + vx·lead, 0.55, boat.z + vz·lead)
+cameraFocus.lerp(boatFocus, 1 − exp(−3.25·dt))
+
+camera.position = cameraFocus + CAMERA_DIR · 62
+camera.zoom     = cameraRig.zoom
+camera.updateProjectionMatrix()</code></pre>
+  <p>«Скорость → отъезд» даёт кинематографичный эффект: на стоянке лодка крупная, на ходу — обзор шире.</p>
+
+  <h2>Звук (Sound)</h2>
+  <ul>
+    <li><b>Шум океана</b>: буфер 4 с белого шума → one-pole lowpass (α = 0.015), фильтр lowpass 540 Гц, Q = 0.65, gain 0.13.</li>
+    <li><b>LFO</b> 0.082 Гц, ±0.052 — «дыхание» прибоя.</li>
+    <li><b>Дрон</b>: 98 / 147 / 196 Гц sine.</li>
+    <li><b>Chime</b>: 523.25 / 659.25 / 783.99 / 1046.5 Гц, две гармоники (sine + triangle на 1.5×), 1.8 с затухание.</li>
+    <li><b>Finish</b>: арпеджио по 0.11 с.</li>
+    <li>Мастер-гейн 0.6. <code>setMuted</code> плавно гасит за 0.4 с.</li>
+  </ul>
+
+  <h2>UI / состояние</h2>
+  <ul>
+    <li><code>showToast(text, ms)</code> — плашка внизу по центру.</li>
+    <li><code>updateScoreUI</code> — <code>#count</code> и pips.</li>
+    <li><code>updateStatus</code> — раз в 0.55 с пересчитывает строку в правом нижнем углу (попутный/волна/штиль + направление + узлы).</li>
+    <li><code>beginPlay</code> — <code>Sound.init()</code>, скрывает стартовый экран.</li>
+    <li><code>resetGame(autoStart)</code> — сбрасывает всё, кроме <code>elapsed</code>.</li>
+  </ul>
+
+  <h2>Известные баги / несостыковки</h2>
+  <ul>
+    <li>Стартовая позиция в <code>state.boat</code> — <code>(0, 2.5)</code>, а <code>resetGame</code> ставит <code>(4.5, -1.8)</code>. После первого ресета лодка окажется в другой точке.</li>
+    <li><code>.hud-top</code> в CSS — grid на 3 колонки, а детей 4 (brand, quest, wind-indicator, top-actions). <code>top-actions</code> уезжает во 2-ю строку. Стоит либо объединить <code>quest</code> и <code>wind-indicator</code> в обёртку, либо задать <code>grid-template-columns: 1fr auto auto 1fr</code>.</li>
+    <li>На мобильном (<code>max-width: 720px</code>) <code>quest</code> — absolute, <code>top-actions</code> — col 2 row 1; <code>wind-indicator</code> тоже попадает в col 2 row 1 → наезжают.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- БЛОК-СХЕМЫ                                                  -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-flow">
+  <h1>Блок-схемы</h1>
+
+  <h2>Главный цикл animate()</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#e8c583"/>
+        </marker>
+        <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#7ed0c1"/>
+        </marker>
+      </defs>
+
+      <!-- animate -->
+      <rect x="360" y="10" width="180" height="42" rx="8" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="450" y="36" text-anchor="middle" fill="#f6dda5" font-size="13">animate()</text>
+      <line x1="450" y1="52" x2="450" y2="78" stroke="#e8c583" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- dt -->
+      <rect x="345" y="80" width="210" height="36" rx="6" fill="#0e2c34" stroke="#e8c583" stroke-opacity=".5"/>
+      <text x="450" y="103" text-anchor="middle" fill="#cfc8b5" font-size="12">dt = min(clock.getDelta(), 0.045)</text>
+      <line x1="450" y1="116" x2="450" y2="142" stroke="#e8c583" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- three columns of updates -->
+      <g fill="#0e2c34" stroke="#7ed0c1">
+        <rect x="30"  y="145" width="180" height="34" rx="6"/>
+        <rect x="30"  y="192" width="180" height="34" rx="6"/>
+        <rect x="30"  y="239" width="180" height="34" rx="6"/>
+        <rect x="30"  y="286" width="180" height="34" rx="6"/>
+        <rect x="240" y="145" width="200" height="34" rx="6"/>
+        <rect x="240" y="192" width="200" height="34" rx="6"/>
+        <rect x="240" y="239" width="200" height="34" rx="6"/>
+        <rect x="240" y="286" width="200" height="34" rx="6"/>
+        <rect x="470" y="145" width="180" height="34" rx="6"/>
+        <rect x="470" y="192" width="180" height="34" rx="6"/>
+        <rect x="470" y="239" width="180" height="34" rx="6"/>
+        <rect x="470" y="286" width="180" height="34" rx="6"/>
+        <rect x="680" y="145" width="190" height="34" rx="6"/>
+        <rect x="680" y="192" width="190" height="34" rx="6"/>
+        <rect x="680" y="239" width="190" height="34" rx="6"/>
+        <rect x="680" y="286" width="190" height="34" rx="6"/>
+      </g>
+      <g fill="#cfc8b5" font-size="11.5" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace">
+        <text x="120" y="166">updateBoat(dt)</text>
+        <text x="120" y="213">recordTrail(dt)</text>
+        <text x="120" y="260">updateOcean(dt)</text>
+        <text x="120" y="307">updateWakeRibbon()</text>
+        <text x="340" y="166">emitWakeParticles(dt)</text>
+        <text x="340" y="213">updateParticles(dt)</text>
+        <text x="340" y="260">updateCollectibles(dt)</text>
+        <text x="340" y="307">updateMotes(t)</text>
+        <text x="560" y="166">updateStatus(dt)</text>
+        <text x="560" y="213">updateCamera(dt)</text>
+        <text x="560" y="260">updateWindIndicator()</text>
+        <text x="560" y="307">lighthouse.rotation += dt·0.18</text>
+        <text x="775" y="166">→ uniforms.time</text>
+        <text x="775" y="213">→ sun.position</text>
+        <text x="775" y="260">→ sky gradient</text>
+        <text x="775" y="307">→ svg rotate</text>
+      </g>
+      <!-- arrows from dt to three groups -->
+      <line x1="450" y1="116" x2="120" y2="145" stroke="#7ed0c1" stroke-width="1.2" marker-end="url(#arr-teal)"/>
+      <line x1="450" y1="116" x2="340" y2="145" stroke="#7ed0c1" stroke-width="1.2" marker-end="url(#arr-teal)"/>
+      <line x1="450" y1="116" x2="560" y2="145" stroke="#7ed0c1" stroke-width="1.2" marker-end="url(#arr-teal)"/>
+      <line x1="450" y1="116" x2="775" y2="145" stroke="#7ed0c1" stroke-width="1.2" marker-end="url(#arr-teal)"/>
+
+      <!-- render -->
+      <line x1="450" y1="340" x2="450" y2="368" stroke="#e8c583" stroke-width="1.5" marker-end="url(#arr)"/>
+      <rect x="330" y="370" width="240" height="42" rx="8" fill="#143c44" stroke="#e8c583"/>
+      <text x="450" y="396" text-anchor="middle" fill="#f6dda5" font-size="13">renderer.render(scene, camera)</text>
+
+      <!-- legend -->
+      <text x="30" y="460" fill="#f6dda5" font-size="12" font-family="ui-monospace">Порядок вызовов в animate():</text>
+      <text x="30" y="480" fill="#cfc8b5" font-size="11.5" font-family="ui-monospace">1) updateBoat → 2) recordTrail → 3) updateOcean → 4) updateWakeRibbon</text>
+      <text x="30" y="497" fill="#cfc8b5" font-size="11.5" font-family="ui-monospace">5) emitWakeParticles → 6) updateParticles → 7) updateCollectibles</text>
+      <text x="30" y="514" fill="#cfc8b5" font-size="11.5" font-family="ui-monospace">8) updateMotes → 9) updateStatus → 10) updateCamera</text>
+      <text x="30" y="531" fill="#cfc8b5" font-size="11.5" font-family="ui-monospace">11) updateWindIndicator → 12) рендер</text>
+      <text x="30" y="560" fill="#e8c583" font-size="11.5" font-family="ui-monospace">Важно: updateBoat вызывается раньше updateCamera, поэтому</text>
+      <text x="30" y="576" fill="#e8c583" font-size="11.5" font-family="ui-monospace">камера сдвигается на текущий кадр (без «дрожания» на скорости).</text>
+    </svg>
+  </div>
+
+  <h2>Ветер → экран (updateWindIndicator)</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#7ed0c1"/>
+        </marker>
+      </defs>
+
+      <rect x="20"  y="30" width="170" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="105" y="53" text-anchor="middle" fill="#f6dda5" font-size="12">getWindAt(x, z)</text>
+      <text x="105" y="71" text-anchor="middle" fill="#cfc8b5" font-size="10.5">{x, z, angle, strength}</text>
+
+      <line x1="190" y1="56" x2="230" y2="56" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <rect x="232" y="30" width="200" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="332" y="53" text-anchor="middle" fill="#f6dda5" font-size="12">new Vector3(x, 0, z)</text>
+      <text x="332" y="71" text-anchor="middle" fill="#cfc8b5" font-size="10.5">3D-вектор ветра у лодки</text>
+
+      <line x1="432" y1="56" x2="472" y2="56" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <rect x="474" y="30" width="200" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="574" y="53" text-anchor="middle" fill="#f6dda5" font-size="12">.project(camera)</text>
+      <text x="574" y="71" text-anchor="middle" fill="#cfc8b5" font-size="10.5">NDC: x, y ∈ [-1, 1]</text>
+
+      <line x1="674" y1="56" x2="714" y2="56" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <rect x="716" y="30" width="164" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="798" y="53" text-anchor="middle" fill="#f6dda5" font-size="11.5">atan2(x, -y)</text>
+      <text x="798" y="71" text-anchor="middle" fill="#cfc8b5" font-size="10.5">угол в радианах</text>
+
+      <!-- second row -->
+      <line x1="798" y1="82" x2="798" y2="122" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <rect x="700" y="124" width="190" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="795" y="147" text-anchor="middle" fill="#f6dda5" font-size="12">deg = rad·180/π + 90</text>
+      <text x="795" y="165" text-anchor="middle" fill="#cfc8b5" font-size="10.5">+90° — калибровка</text>
+
+      <line x1="700" y1="150" x2="660" y2="150" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)" transform="translate(0,0)"/>
+
+      <rect x="460" y="124" width="190" height="52" rx="8" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="555" y="147" text-anchor="middle" fill="#f6dda5" font-size="12">((deg % 360) + 360) % 360</text>
+      <text x="555" y="165" text-anchor="middle" fill="#cfc8b5" font-size="10.5">нормализация [0, 360)</text>
+
+      <line x1="460" y1="150" x2="420" y2="150" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <rect x="220" y="124" width="190" height="52" rx="8" fill="#143c44" stroke="#e8c583"/>
+      <text x="315" y="147" text-anchor="middle" fill="#f6dda5" font-size="11.5">svg#windArrow</text>
+      <text x="315" y="165" text-anchor="middle" fill="#cfc8b5" font-size="10.5">rotate(deg 24 24)</text>
+
+      <text x="20" y="225" fill="#e8c583" font-size="12">Почему +90°: NDC даёт Y вверх, SVG — Y вниз; плюс камера под (1,1,1),</text>
+      <text x="20" y="245" fill="#e8c583" font-size="12">что даёт «сдвиг» оси на 45°. Значение откалибровано вручную.</text>
+      <text x="20" y="270" fill="#cfc8b5" font-size="11.5">Направление стрелки показывает, куда ветер дует В МИРЕ, а не куда плывёт лодка.</text>
+    </svg>
+  </div>
+
+  <h2>Шейдер океана — поток данных</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+      <defs>
+        <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#7ed0c1"/>
+        </marker>
+      </defs>
+
+      <rect x="20" y="20" width="200" height="46" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="120" y="40" text-anchor="middle" fill="#f6dda5" font-size="12">state.boat</text>
+      <text x="120" y="56" text-anchor="middle" fill="#cfc8b5" font-size="10.5">x, z, heading, speed</text>
+
+      <rect x="20" y="86" width="200" height="46" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="120" y="106" text-anchor="middle" fill="#f6dda5" font-size="12">state.trail[24]</text>
+      <text x="120" y="122" text-anchor="middle" fill="#cfc8b5" font-size="10.5">x, z, age, strength</text>
+
+      <rect x="20" y="152" width="200" height="46" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="120" y="172" text-anchor="middle" fill="#f6dda5" font-size="12">wind</text>
+      <text x="120" y="188" text-anchor="middle" fill="#cfc8b5" font-size="10.5">angle, strength</text>
+
+      <rect x="20" y="218" width="200" height="46" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="120" y="238" text-anchor="middle" fill="#f6dda5" font-size="12">elapsed</text>
+      <text x="120" y="254" text-anchor="middle" fill="#cfc8b5" font-size="10.5">секунды с начала</text>
+
+      <line x1="220" y1="43"  x2="290" y2="43"  stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="220" y1="109" x2="290" y2="109" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="220" y1="175" x2="290" y2="175" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="220" y1="241" x2="290" y2="241" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="292" y="20"  width="180" height="46" rx="6" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="382" y="40" text-anchor="middle" fill="#f6dda5" font-size="12">uBoat = vec4</text>
+      <text x="382" y="56" text-anchor="middle" fill="#cfc8b5" font-size="10.5">(x, z, heading, speed)</text>
+
+      <rect x="292" y="86"  width="180" height="46" rx="6" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="382" y="106" text-anchor="middle" fill="#f6dda5" font-size="12">uTrail[12] = vec4[]</text>
+      <text x="382" y="122" text-anchor="middle" fill="#cfc8b5" font-size="10.5">подвыборка из trail[24]</text>
+
+      <rect x="292" y="152" width="180" height="46" rx="6" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="382" y="172" text-anchor="middle" fill="#f6dda5" font-size="12">windX, windZ</text>
+      <text x="382" y="188" text-anchor="middle" fill="#cfc8b5" font-size="10.5">sin/cos угла (baked)</text>
+
+      <rect x="292" y="218" width="180" height="46" rx="6" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="382" y="238" text-anchor="middle" fill="#f6dda5" font-size="12">uTime</text>
+      <text x="382" y="254" text-anchor="middle" fill="#cfc8b5" font-size="10.5">float</text>
+
+      <line x1="472" y1="43"  x2="542" y2="43"  stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="472" y1="109" x2="542" y2="109" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="472" y1="175" x2="542" y2="175" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="472" y1="241" x2="542" y2="241" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+
+      <rect x="544" y="30" width="330" height="270" rx="8" fill="#04161b" stroke="#e8c583"/>
+      <text x="709" y="54" text-anchor="middle" fill="#f6dda5" font-size="12">VERTEX SHADER</text>
+      <text x="565" y="78"  fill="#cfc8b5" font-size="11">alongWind  = dot(instXZ, wind)</text>
+      <text x="565" y="96"  fill="#cfc8b5" font-size="11">acrossWind = dot(instXZ, ⟂wind)</text>
+      <text x="565" y="118" fill="#cfc8b5" font-size="11">ambient = sin(t·1.08 + along·0.55)·0.09</text>
+      <text x="565" y="136" fill="#cfc8b5" font-size="11">        + sin(t·1.63 + across·0.22)·0.05</text>
+      <text x="565" y="158" fill="#e8c583" font-size="11">+ hull + bow + ring (влияние лодки)</text>
+      <text x="565" y="176" fill="#e8c583" font-size="11">+ trail ripple (влияние следа)</text>
+      <text x="565" y="198" fill="#cfc8b5" font-size="11">wave   = clamp(target, -0.43, 0.6)</text>
+      <text x="565" y="216" fill="#cfc8b5" font-size="11">squash = max(0,-wave)·0.3 + foam·0.14</text>
+      <text x="565" y="238" fill="#cfc8b5" font-size="11">y += wave/2.1</text>
+      <text x="565" y="256" fill="#cfc8b5" font-size="11">xz *= (1 + squash)</text>
+      <text x="565" y="278" fill="#7ed0c1" font-size="11">→ varying vWave, vFoam, vShade, vTop</text>
+
+      <rect x="220" y="330" width="460" height="66" rx="8" fill="#04161b" stroke="#e8c583"/>
+      <text x="450" y="354" text-anchor="middle" fill="#f6dda5" font-size="12">FRAGMENT SHADER</text>
+      <text x="240" y="376" fill="#cfc8b5" font-size="11">water = mix(deep, mid, crest) по depthT</text>
+      <text x="240" y="392" fill="#cfc8b5" font-size="11">diffuse *= water · sideTone(seam, bandTint) · vShade</text>
+
+      <line x1="709" y1="300" x2="450" y2="330" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a3)"/>
+    </svg>
+  </div>
+
+  <h2>Логика updateBoat (детально)</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, Menlo, Consolas, monospace">
+      <defs>
+        <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#7ed0c1"/>
+        </marker>
+      </defs>
+
+      <rect x="360" y="10" width="180" height="38" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="450" y="34" text-anchor="middle" fill="#f6dda5" font-size="12">updateBoat(dt)</text>
+      <line x1="450" y1="48" x2="450" y2="72" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+
+      <rect x="360" y="74" width="180" height="34" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="450" y="95" text-anchor="middle" fill="#cfc8b5" font-size="11.5">updateWind(dt)</text>
+      <line x1="450" y1="108" x2="450" y2="132" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+
+      <polygon points="450,134 600,164 450,194 300,164" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="450" y="160" text-anchor="middle" fill="#f6dda5" font-size="11.5">started &amp;&amp; !finished ?</text>
+      <text x="450" y="178" text-anchor="middle" fill="#cfc8b5" font-size="10.5">ввод активен</text>
+
+      <line x1="300" y1="164" x2="180" y2="164" stroke="#7ed0c1" stroke-width="1.5"/>
+      <line x1="180" y1="164" x2="180" y2="220" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+      <text x="240" y="158" fill="#e07d5d" font-size="10.5" text-anchor="middle">НЕТ</text>
+
+      <line x1="450" y1="194" x2="450" y2="220" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+      <text x="470" y="212" fill="#7ed0c1" font-size="10.5">ДА</text>
+
+      <rect x="60" y="222" width="240" height="60" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="180" y="244" text-anchor="middle" fill="#f6dda5" font-size="11.5">vx, vz → 0</text>
+      <text x="180" y="262" text-anchor="middle" fill="#cfc8b5" font-size="10.5">(expDamp с λ = 3.6)</text>
+
+      <rect x="320" y="222" width="260" height="60" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="450" y="244" text-anchor="middle" fill="#f6dda5" font-size="11.5">ix, iz из WASD / Arrow</text>
+      <text x="450" y="262" text-anchor="middle" fill="#cfc8b5" font-size="10.5">dir = normalize(right·ix + fwd·iz)</text>
+
+      <line x1="450" y1="282" x2="450" y2="306" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+
+      <rect x="320" y="308" width="260" height="60" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="450" y="330" text-anchor="middle" fill="#f6dda5" font-size="11.5">heading → atan2(dir.x, dir.y)</text>
+      <text x="450" y="348" text-anchor="middle" fill="#cfc8b5" font-size="10.5">dampAngle(λ = 6.2)</text>
+
+      <line x1="450" y1="368" x2="450" y2="392" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+
+      <rect x="320" y="394" width="260" height="60" rx="6" fill="#0e2c34" stroke="#7ed0c1"/>
+      <text x="450" y="416" text-anchor="middle" fill="#f6dda5" font-size="11.5">boatSpeed → target</text>
+      <text x="450" y="434" text-anchor="middle" fill="#cfc8b5" font-size="10.5">5.1 если boost, иначе 3.25</text>
+
+      <line x1="450" y1="454" x2="450" y2="478" stroke="#7ed0c1" stroke-width="1.5" marker-end="url(#a4)"/>
+
+      <rect x="290" y="480" width="320" height="66" rx="6" fill="#0e2c34" stroke="#e8c583"/>
+      <text x="450" y="502" text-anchor="middle" fill="#f6dda5" font-size="11.5">wind drift + self motion → desired</text>
+      <text x="450" y="520" text-anchor="middle" fill="#cfc8b5" font-size="10.5">vx = expDamp(vx, desiredVx, 3.8, dt)</text>
+      <text x="450" y="536" text-anchor="middle" fill="#cfc8b5" font-size="10.5">затем canSail по X, затем по Z (slide)</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ПАЛИТРА                                                      -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-palette">
+  <h1>Палитра</h1>
+
+  <h2>Мир (palette в game.js)</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#042c36"></div><div class="swatch-body"><b>deep</b><code>#042c36</code><small>глубина, нижняя полоса волны</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#17666d"></div><div class="swatch-body"><b>mid</b><code>#17666d</code><small>средний тон воды</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#8fdbc2"></div><div class="swatch-body"><b>crest</b><code>#8fdbc2</code><small>гребень волны</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#eff7df"></div><div class="swatch-body"><b>foam</b><code>#eff7df</code><small>пена, буруны, частицы</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#d8b977"></div><div class="swatch-body"><b>sand</b><code>#d8b977</code><small>нижняя полоса пляжа</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#efd9a0"></div><div class="swatch-body"><b>sandLight</b><code>#efd9a0</code><small>верх пляжа</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#4f8b51"></div><div class="swatch-body"><b>grass</b><code>#4f8b51</code><small>базовая трава</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#73a758"></div><div class="swatch-body"><b>grassLight</b><code>#73a758</code><small>трава у холмов</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#afd185"></div><div class="swatch-body"><b>hillLight</b><code>#afd185</code><small>вершины холмов</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#7f877f"></div><div class="swatch-body"><b>rock</b><code>#7f877f</code><small>скалы</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#606b66"></div><div class="swatch-body"><b>rockDark</b><code>#606b66</code><small>тени скал</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e7ede2"></div><div class="swatch-body"><b>snow</b><code>#e7ede2</code><small>снег на пиках</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f1cf8c"></div><div class="swatch-body"><b>gold</b><code>#f1cf8c</code><small>искры, фонарь, свет</small></div></div>
+  </div>
+
+  <h2>Foundation (цвета тайлов-оснований)</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#645437"></div><div class="swatch-body"><b>sand</b><code>#645437</code><small>foundationColors.sand</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#29452e"></div><div class="swatch-body"><b>grass</b><code>#29452e</code><small>foundationColors.grass</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#355234"></div><div class="swatch-body"><b>hill</b><code>#355234</code><small>foundationColors.hill</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#3b4541"></div><div class="swatch-body"><b>peak</b><code>#3b4541</code><small>foundationColors.peak</small></div></div>
+  </div>
+
+  <h2>Диорама (addSlab)</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#082127"></div><div class="swatch-body"><b>base</b><code>#082127</code><small>нижняя тёмная подложка</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#947042"></div><div class="swatch-body"><b>rim</b><code>#947042</code><small>золотой ободок</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#143c44"></div><div class="swatch-body"><b>layer2</b><code>#143c44</code><small>средний слой</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#0b3039"></div><div class="swatch-body"><b>top</b><code>#0b3039</code><small>верхний слой</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#082a32"></div><div class="swatch-body"><b>underwater</b><code>#082a32</code><small>дно под водой</small></div></div>
+  </div>
+
+  <h2>UI (style.css)</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#05161b"></div><div class="swatch-body"><b>--bg-deep</b><code>#05161b</code><small>общий фон</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#0a2931"></div><div class="swatch-body"><b>--bg-sea</b><code>#0a2931</code><small>фон «моря»</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f1ecdb"></div><div class="swatch-body"><b>--cream</b><code>#f1ecdb</code><small>основной текст</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#d8d5c4"></div><div class="swatch-body"><b>--cream-dim</b><code>#d8d5c4</code><small>второстепенный</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e8c583"></div><div class="swatch-body"><b>--gold</b><code>#e8c583</code><small>акцент</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f6dda5"></div><div class="swatch-body"><b>--gold-bright</b><code>#f6dda5</code><small>hover / active</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#7ed0c1"></div><div class="swatch-body"><b>--teal</b><code>#7ed0c1</code><small>статус-дот</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e07d5d"></div><div class="swatch-body"><b>--coral</b><code>#e07d5d</code><small>флажок, акценты</small></div></div>
+  </div>
+
+  <h2>Меши (материалы)</h2>
+  <h3>Лодка</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#4b2e23"></div><div class="swatch-body"><b>hull</b><code>#4b2e23</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#d1a15f"></div><div class="swatch-body"><b>trim</b><code>#d1a15f</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#b9844c"></div><div class="swatch-body"><b>deck</b><code>#b9844c</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f1e2c1"></div><div class="swatch-body"><b>sail</b><code>#f1e2c1</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#c6664d"></div><div class="swatch-body"><b>flag/stripe</b><code>#c6664d</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#573a28"></div><div class="swatch-body"><b>darkWood</b><code>#573a28</code></div></div>
+  </div>
+
+  <h3>Декор</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#5b3e2b"></div><div class="swatch-body"><b>trunk</b><code>#5b3e2b</code><small>ствол ели</small></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#82613f"></div><div class="swatch-body"><b>palm trunk</b><code>#82613f</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#60935c"></div><div class="swatch-body"><b>palm leaf</b><code>#60935c</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#5f442c"></div><div class="swatch-body"><b>coconut</b><code>#5f442c</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e4d3b1"></div><div class="swatch-body"><b>cottage wall</b><code>#e4d3b1</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#cbb790"></div><div class="swatch-body"><b>cottage side</b><code>#cbb790</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#a85940"></div><div class="swatch-body"><b>cottage roof</b><code>#a85940</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#5c412e"></div><div class="swatch-body"><b>cottage wood</b><code>#5c412e</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#9b937c"></div><div class="swatch-body"><b>lighthouse stone</b><code>#9b937c</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e8e1cc"></div><div class="swatch-body"><b>lighthouse white</b><code>#e8e1cc</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#b8563f"></div><div class="swatch-body"><b>lighthouse red</b><code>#b8563f</code></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2a3433"></div><div class="swatch-body"><b>lighthouse dark</b><code>#2a3433</code></div></div>
+  </div>
+
+  <h2>Эмиссия / не-тонмаппинг</h2>
+  <p>Все <code>toneMapped: false</code> материалы светятся поверх: <code>0xffc56f</code> (halo искры), <code>0xffd58d</code> (ring), <code>0xffb466</code> (фонарь лодки), <code>0xffcc7c</code> (маяк), <code>0xffc372</code> (окно домика).</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- ОПТИМИЗАЦИЯ                                                  -->
+<!-- ============================================================ -->
+<section class="tab" id="tab-optimize">
+  <h1>Оптимизация</h1>
+  <p>Ниже — список улучшений, которые имеет смысл рассмотреть. Каждое помечено уровнем влияния: <span class="pill red">critical</span> — заметно на слабом железе, <span class="pill">major</span> — потенциальный FPS/память, <span class="pill green">minor</span> — качество / чистота.</p>
+
+  <h2>1. Меши и инстансинг</h2>
+
+  <div class="opt">
+    <h4>1.1. Лодка: объединить меши в единый BufferGeometry</h4>
+    <p>Сейчас <code>createBoat()</code> создаёт ~15 отдельных <code>Mesh</code> + PointLight + Sprite. Все статические части (hull, deck, планки, мачта, гик, бушприт, ящик, каюта, верёвки, флаг-основа) можно:</p>
+    <ul>
+      <li>склеить в <b>одну</b> геометрию с несколькими material-groups (по цвету), либо</li>
+      <li>собрать в <b>одну</b> GLTF/GLB модель (<code>three/examples/jsm/loaders/GLTFLoader</code>) — грузится 1 раз, не пересоздаётся.</li>
+    </ul>
+    <p>Даст: 15 draw calls → 1–2, плюс меньше работы <code>Matrix4.updateMatrixWorld</code> каждый кадр. Для <b>одной</b> лодки эффект невелик, но при <b>нескольких</b> (если захочется) — критично.</p>
+    <p class="impact">major · draw calls &amp; CPU</p>
+  </div>
+
+  <div class="opt">
+    <h4>1.2. Пальмы → InstancedMesh</h4>
+    <p>4 пальмы × 13 мешей = 52 объекта в сцене, и каждый — свой <code>MeshStandardMaterial</code>. Варианты:</p>
+    <ul>
+      <li><b>Склеить</b> каждую пальму в 1 геометрию (3 материала → 3 группы) — 4 меша.</li>
+      <li><b>InstancedMesh</b> стволов + листьев + кокосов — 3 меша на всё.</li>
+      <li>Меньше всего кода — вынести <code>createPalm</code> в общую «фабрику» и мержить через <code>BufferGeometryUtils.mergeGeometries</code>.</li>
+    </ul>
+    <p class="impact">major · 52 → 3–4 draw calls</p>
+  </div>
+
+  <div class="opt">
+    <h4>1.3. Домики и маяк — статика, но пересоздаются</h4>
+    <p>Домиков 2, маяк 1. Каждый домик — 6 мешей + glow; маяк — 8 мешей + Sprite + конус-луч + PointLight. Итого ~25 draw calls на 3 объекта. Проблема — каждый <code>MeshStandardMaterial</code> создаётся заново на каждый вызов <code>createCottage()</code>, что плодит текстуры/shader program.</p>
+    <ul>
+      <li>Сделать <b>общие материалы</b> для домиков (wall / roof / wood) — переиспользовать.</li>
+      <li>Склеить геометрию каждого домика в один меш с группами.</li>
+      <li>Маяк — 1 GLB или merged BufferGeometry.</li>
+    </ul>
+    <p class="impact">major · ~25 → ~6 draw calls</p>
+  </div>
+
+  <div class="opt">
+    <h4>1.4. Деревья и камни — уже InstancedMesh <span class="pill green">ok</span></h4>
+    <p>Молодцы, что сделано сразу. Единственное — <code>frustumCulled = false</code>. Для инстансов это правильно, потому что иначе они «пропадают», но можно вручную вычислять bounding sphere и включать <code>frustumCulled = true</code>, если зоны чётко разделены.</p>
+    <p class="impact low">minor · 0.5–1 ms на слабых картах</p>
+  </div>
+
+  <h2>2. Гексовые столбики</h2>
+
+  <div class="opt">
+    <h4>2.1. Заменить 25 реальных полос в <code>landMesh</code> на «полосатость в шейдере»</h4>
+    <p>Сейчас суша — <b>25 отдельных полос в геометрии</b> (25 × 12 вершин × 6 граней). Аналогично воде, где полосы рисуются во фрагментном шейдере. Логично унифицировать: суша тоже становится лёгкой призмой, а <code>vLocalH</code> + <code>seam</code> + <code>bandTint</code> берут на себя всю «полосатость». <b>Но</b> у суши сейчас <code>flatShading: true</code> и цвет вершин — при переносе в шейдер нужно будет передавать <code>instanceColor</code> как атрибут, что уже делается через <code>setColorAt</code>.</p>
+    <p>Это уменьшит геометрию в ~25 раз для суши и, что важнее, откроет дорогу к <b>склейке дальних тайлов</b>.</p>
+    <p class="impact">critical · 25× меньше памяти + быстрее shadow pass</p>
+  </div>
+
+  <div class="opt">
+    <h4>2.2. Заменить гексовые столбики на «плоскую землю с hex-текстурой»</h4>
+    <p>Радикальный вариант: один тайл = один <b>плоский quad</b> с текстурой (hex grid) + normal map + vertex displacement в шейдере. Это убьёт 100 000 инстансов и заменит их ~4 000.</p>
+    <p><b>Что потеряется:</b></p>
+    <ul>
+      <li>Настоящая 3D-столбчатость — её видно на закате, когда столбики дают «бахрому».</li>
+      <li>Реальная глубина (дно) — придётся имитировать нормалями.</li>
+      <li>Тени от столбиков друг на друга.</li>
+    </ul>
+    <p><b>Что выиграется:</b> колоссально (в 20–30 раз) меньше геометрии; шейдер один, в него можно засунуть хоть 100 уровней полосатости.</p>
+    <p>Компромисс: <b>гибрид</b> — ближние 20–30 тайлов рендерить настоящими столбиками, дальние — плоскими quad'ами с той же текстурой. Как раз LOD-подход.</p>
+    <p class="impact">critical · до 10× быстрее на мобилках</p>
+  </div>
+
+  <div class="opt">
+    <h4>2.3. LOD для столбиков</h4>
+    <p>Если гибрид — слишком много работы: сделать 2–3 уровня детализации столбиков (25 / 9 / 3 полосы) и переключать по расстоянию до <code>cameraFocus</code>. Или вообще отключать полосы дальше 30 юнитов.</p>
+    <p class="impact">major · +30–50% FPS в 100×40</p>
+  </div>
+
+  <div class="opt">
+    <h4>2.4. Дальние тайлы — merge в один InstancedMesh</h4>
+    <p>Вместо 25 отдельных инстансов на тайл — <b>один</b> инстанс на дальний тайл (просто куб/призма). Меняется per-tile. Даёт −90% инстансов вдали.</p>
+    <p class="impact">major · критично для 100×40</p>
+  </div>
+
+  <h2>3. Шейдер океана</h2>
+
+  <div class="opt">
+    <h4>3.1. Ранний выход для далёких инстансов</h4>
+    <p>В вершинном шейдере <code>for (i = 0; i &lt; 12; i++)</code> по трейлу всегда выполняется. Можно передать <code>uniform float uTrailActive</code> и на дальних тайлах (например <code>distance &gt; 20</code>) пропускать цикл. Даст −5–15% vertex time.</p>
+    <p class="impact">major · vertex shader</p>
+  </div>
+
+  <div class="opt">
+    <h4>3.2. Уменьшить <code>OCEAN_TRAIL_SAMPLES</code> с 12 до 6–8</h4>
+    <p>12 циклов на 80 000 инстансов — это 960 000 итераций в кадр. Визуально трейл после 8 уже не читается. 8 или 6 — достаточный компромисс.</p>
+    <p class="impact mid">major · −25% vertex time</p>
+  </div>
+
+  <div class="opt">
+    <h4>3.3. <code>flatShading: true</code> для воды → <code>varying vFoam/vShade</code> можно считать через <code>fwidth</code></h4>
+    <p>Сейчас шейдер считает всё линейно, flat shading — уже есть. Особой выгоды от смены нет, но можно попробовать убрать banding и брать <code>fwidth(vLocalH)</code> вместо явного <code>fract(vLocalH * 25)</code> — читаемость лучше, цена та же.</p>
+    <p class="impact low">minor · чистота кода</p>
+  </div>
+
+  <div class="opt">
+    <h4>3.4. «Заморозить» шейдер, если лодка стоит</h4>
+    <p>Если <code>boatSpeed &lt; 0.05</code> и трейл пуст, и <code>wind.strength</code> не менялся 200 мс — можно пропускать обновление <code>uBoat</code> и <code>uTime</code> (но шейдер всё равно считается). Скорее экономия на GPU-латентности, чем на FPS. Идея спорная, но имеет смысл на паузе.</p>
+    <p class="impact low">minor</p>
+  </div>
+
+  <div class="opt">
+    <h4>3.5. Сравнить с одним ShaderMaterial вместо <code>onBeforeCompile</code></h4>
+    <p><code>MeshStandardMaterial</code> тянет за собой весь освещённый пайплайн. Для воды часто достаточно <code>MeshBasicMaterial</code> + ручной фейк-освещение по нормали → −30% фрагментных вычислений. Но потеряется реакция на тени/свет, которая сейчас есть.</p>
+    <p class="impact mid">major · fragment shader</p>
+  </div>
+
+  <h2>4. Тени</h2>
+
+  <div class="opt">
+    <h4>4.1. Обновлять shadow map не каждый кадр</h4>
+    <p><code>renderer.shadowMap.autoUpdate = false</code> + вручную вызывать <code>needsUpdate = true</code> только когда <code>sun.position</code> сдвинулся на &gt; 0.5, или когда камера «перескочила» на новый тайл. Сейчас — каждый кадр, 2048×2048.</p>
+    <p>Это <b>самое заметное</b> улучшение после геометрии.</p>
+    <p class="impact">critical · 30–50% FPS</p>
+  </div>
+
+  <div class="opt">
+    <h4>4.2. Уменьшить shadow map 2048 → 1024</h4>
+    <p>На изометрии разница почти не видна. Экономит ~4× памяти и скорость записи.</p>
+    <p class="impact mid">major · −8 MB GPU + быстрее</p>
+  </div>
+
+  <div class="opt">
+    <h4>4.3. Точечный свет маяка</h4>
+    <p><code>PointLight(0xffbf70, 5.2, 7.5, 2)</code> — один, но каждый PointLight = +1 shader pass во всех материалах в радиусе. Ладно бы 1 — но если захочется ещё, нужно переходить на <b>fake emissive</b> (всегда видимый glow sprite) вместо реального PointLight.</p>
+    <p class="impact low">minor · сейчас</p>
+  </div>
+
+  <h2>5. Процедурная карта / ручные тайлы</h2>
+
+  <div class="opt">
+    <h4>5.1. Оставить ручное размещение островов — <span class="pill green">правильно</span></h4>
+    <p>Сейчас <code>ISLANDS</code> — массив объектов, каждый вручную задан. Это даёт <b>контроль</b>: можно расположить острова «как в реальном Карибском бассейне», подобрать ритм. Полностью процедурная генерация (Voronoi, Perlin-континенты) даст «ещё один процедурный мир» и <b>не даст</b> узнаваемых очертаний.</p>
+    <p>Плюс: <code>ISLANDS</code> — уже вынесены в конфиг, менять легко.</p>
+    <p class="impact low">R&amp;D, не производительность</p>
+  </div>
+
+  <div class="opt">
+    <h4>5.2. Кэшировать сгенерированную карту</h4>
+    <p>На каждом старте 100×40 тайлов проходят через двойной цикл + wobble, потом второй проход по всем landTiles, потом создание колонок. Для маленькой карты — быстро, но можно вынести в <b>Web Worker</b> или <b>кэшировать в localStorage</b> как JSON (позиция + тип + высота). При старте — только <code>JSON.parse</code>.</p>
+    <p>Даст: −50–150 мс на старте, что для «мгновенной загрузки» приятно.</p>
+    <p class="impact mid">major · startup time</p>
+  </div>
+
+  <div class="opt">
+    <h4>5.3. Заменить «квадратные тайлы» на «гексагональные тайлы»</h4>
+    <p>Сейчас каждый тайл — квадрат 5×5 гексов, но между квадратными тайлами гексы сшиваются вручную (см. <code>globalRow % 2</code>). Это работает, но при полном гекс-гриде (hex tiles 7×7, 19×19) можно было бы:</p>
+    <ul>
+      <li>Один инстанс на гекс вместо 25 — но это уже сейчас так.</li>
+      <li>Убрать швы на границах тайлов (сейчас их нет визуально, но логически гексы привязаны к квадратной сетке).</li>
+      <li>Упростить frustum culling — bounding sphere гекса — реальная.</li>
+    </ul>
+    <p>Но: (а) карта квадратная по логике (100×40), (б) «квадратный тайл» удобен для диорамы-подложки. <b>Не факт, что стоит менять</b>.</p>
+    <p class="impact low">архитектурный выбор</p>
+  </div>
+
+  <h2>6. Частицы и след</h2>
+
+  <div class="opt">
+    <h4>6.1. Пул частиц — уже есть <span class="pill green">ok</span></h4>
+    <p>120 частиц, кольцевой буфер, <code>particleCursor</code>. Хорошо. Единственное — <code>updateParticles</code> проходит по всем 120, даже если 100 мертвы. Микрооптимизация: хранить <code>aliveCount</code>.</p>
+    <p class="impact low">minor</p>
+  </div>
+
+  <div class="opt">
+    <h4>6.2. Ribbon — ребилд только при изменении</h4>
+    <p><code>updateWakeRibbon</code> вызывается каждый кадр и перезаписывает все 24 × 3 вершины. Если <code>state.boatSpeed &lt; 0.05</code> и <code>trail.length === 0</code> — можно <code>return</code> сразу. Микро, но в покое FPS подскочит.</p>
+    <p class="impact low">minor · idle</p>
+  </div>
+
+  <h2>7. Pixel ratio и рендер</h2>
+
+  <div class="opt">
+    <h4>7.1. Понизить <code>getPixelRatio</code> на мобильных</h4>
+    <p>Сейчас <code>min(dpr, 1.65)</code> на мобильных, <code>min(dpr, 2)</code> на десктопе. На retina-мобиле 1.65 — это ~2.6M пикселей при 1080p экране. Разница между 1.65 и 1.2 — заметна только в статике. Уменьшит fill rate на 40%.</p>
+    <p class="impact">critical · мобильные</p>
+  </div>
+
+  <div class="opt">
+    <h4>7.2. Отключить <code>antialias</code> на мобильных и включить FXAA-пост</h4>
+    <p>MSAA в WebGL дорогой. Компромисс: на мобильных <code>antialias: false</code>, а на десктопе оставить. Или использовать <code>SMAA</code> из <code>three/examples</code>.</p>
+    <p class="impact mid">major · мобильные</p>
+  </div>
+
+  <h2>8. Звук</h2>
+
+  <div class="opt">
+    <h4>8.1. Шум океана — буфер 4 с <span class="pill green">ok</span></h4>
+    <p>Loop через <code>source.loop = true</code> — хорошо, не пересоздаётся.</p>
+    <p class="impact low">ok</p>
+  </div>
+
+  <div class="opt">
+    <h4>8.2. При смене таба вкладки — <code>ctx.suspend()</code></h4>
+    <p>Если пользователь ушёл с вкладки, звук продолжает играть. Можно <code>document.visibilitychange</code> → <code>ctx.suspend()</code> / <code>ctx.resume()</code>.</p>
+    <p class="impact low">UX</p>
+  </div>
+
+  <h2>9. Что можно вынести в отдельные файлы</h2>
+  <p>Сейчас всё в <code>game.js</code> (~1500+ строк). Разумно разрезать:</p>
+  <ul>
+    <li><code>core/utils.js</code> — clamp, lerp, smoothstep, expDamp, dampAngle, mulberry32, hash2, valueNoise.</li>
+    <li><code>core/world.js</code> — ISLANDS, tileX/Z, terrainForColumn, createColumnGeometry, createOceanColumnGeometry.</li>
+    <li><code>core/wind.js</code> — wind, getWindAt, updateWind.</li>
+    <li><code>core/sound.js</code> — Sound IIFE.</li>
+    <li><code>render/boat.js</code> — makeBoatShape, createBoat.</li>
+    <li><code>render/decor.js</code> — createPalm, createCottage, lighthouse.</li>
+    <li><code>render/oceanShader.js</code> — onBeforeCompile-патч.</li>
+    <li><code>game/state.js</code>, <code>game/input.js</code>, <code>game/loop.js</code>.</li>
+  </ul>
+  <p>Не оптимизация FPS, но оптимизация сопровождаемости. И откроет дорогу к tree-shaking, если захочется собрать через Vite/Rollup.</p>
+  <p class="impact low">DX</p>
+
+  <h2>10. Итоговый «топ-5» для ближайшего спринта</h2>
+  <ol>
+    <li><b>shadowMap.autoUpdate = false</b> + ручной <code>needsUpdate</code> (30–50% FPS).</li>
+    <li><b>Заменить 25-полосную геометрию суши</b> на шейдерную, как у воды (25× меньше вершин).</li>
+    <li><b>Понизить pixelRatio</b> на мобильных до 1.2 и <code>antialias: false</code> (40% fill rate).</li>
+    <li><b>Склеить лодку / пальмы / домики</b> в объединённые геометрии (≤ 10 draw calls вместо 100+).</li>
+    <li><b>Кэшировать сгенерированную карту</b> в localStorage — мгновенный старт.</li>
+  </ol>
+
+  <h2>Мелкие баги, которые можно починить заодно</h2>
+  <ul>
+    <li><b>Стартовая позиция</b> в <code>state.boat</code> (0, 2.5) не совпадает с <code>resetGame</code> (4.5, -1.8) — после R лодка «прыгает».</li>
+    <li><b>.hud-top</b> в CSS — grid на 3 колонки, а детей 4 (brand / quest / wind-indicator / top-actions). <code>top-actions</code> уезжает во 2-ю строку.</li>
+    <li><b>Мобильный</b> медиазапрос: <code>.wind-indicator</code> и <code>.top-actions</code> оба в col 2 row 1 — наезжают.</li>
+    <li><b>particleCount</b> в <code>spawnParticle</code>: индексация через <code>particleCursor - 1</code> с обёрткой — работает, но легко запутаться; лучше явно считать <code>const idx = particleCursor</code>.</li>
+    <li><b>Sound.setMuted</b> — при <code>muted = true</code> gain становится 0, но новый звук всё равно спавнится; лучшe <code>if (muted) return</code> в <code>chime/finish</code>.</li>
+    <li><b>frustumCulled = false</b> на частицах и следе — если они вне экрана, всё равно считаются. Для <code>Points</code> с 120 точками — мелочь, но можно убрать.</li>
+  </ul>
+</section>
+
+</main>
+
+<script>
+  const tabs = document.querySelectorAll('#tabs button');
+  const sections = document.querySelectorAll('section.tab');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.tab;
+      tabs.forEach(b => b.classList.toggle('active', b === btn));
+      sections.forEach(s => s.classList.toggle('active', s.id === 'tab-' + id));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.replaceState(null, '', '#' + id);
+    });
+  });
+  // deep-link
+  if (location.hash) {
+    const name = location.hash.slice(1);
+    const btn = document.querySelector('#tabs button[data-tab="' + name + '"]');
+    if (btn) btn.click();
+  }
+</script>
+</body>
+</html>

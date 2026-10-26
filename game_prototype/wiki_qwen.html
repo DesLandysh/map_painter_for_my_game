@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki: Гексовый прилив</title>
+  <style>
+    :root {
+      --bg: #0a1628;
+      --bg-light: #132238;
+      --text: #e8ecf1;
+      --text-dim: #8b95a5;
+      --accent: #4fc3f7;
+      --accent-gold: #ffd54f;
+      --border: #2a3a52;
+      --code-bg: #0d1b2a;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: var(--accent-gold);
+      margin-bottom: 10px;
+      font-size: 2.5em;
+    }
+    
+    h2 {
+      color: var(--accent);
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+    
+    h3 {
+      color: var(--accent-gold);
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: var(--text-dim);
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      flex-wrap: wrap;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      background: var(--bg-light);
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      border-radius: 5px 5px 0 0;
+    }
+    
+    .tab:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    
+    .tab.active {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Code blocks */
+    pre {
+      background: var(--code-bg);
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      border-left: 4px solid var(--accent);
+      margin: 15px 0;
+    }
+    
+    code {
+      font-family: 'Courier New', monospace;
+      color: var(--accent);
+    }
+    
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    
+    .param-table th,
+    .param-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .param-table th {
+      background: var(--bg-light);
+      color: var(--accent-gold);
+    }
+    
+    .param-table tr:hover {
+      background: var(--bg-light);
+    }
+    
+    /* Color palette */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .color-card {
+      background: var(--bg-light);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    
+    .color-swatch {
+      width: 100%;
+      height: 80px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      border: 2px solid var(--border);
+    }
+    
+    .color-name {
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    
+    .color-hex {
+      color: var(--text-dim);
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+    
+    /* Flowchart */
+    .flowchart {
+      background: var(--bg-light);
+      padding: 30px;
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+    
+    .flow-node {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 10px;
+      font-weight: bold;
+      text-align: center;
+      min-width: 150px;
+    }
+    
+    .flow-node.process {
+      background: var(--accent-gold);
+    }
+    
+    .flow-node.decision {
+      background: #ff7043;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      padding: 20px 30px;
+    }
+    
+    .flow-arrow {
+      color: var(--text-dim);
+      font-size: 1.5em;
+      margin: 0 10px;
+    }
+    
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    
+    /* Optimization list */
+    .opt-item {
+      background: var(--bg-light);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border-left: 4px solid var(--accent-gold);
+    }
+    
+    .opt-item h4 {
+      color: var(--accent-gold);
+      margin-bottom: 10px;
+    }
+    
+    .opt-item ul {
+      margin-left: 20px;
+      color: var(--text-dim);
+    }
+    
+    .opt-item li {
+      margin: 8px 0;
+    }
+    
+    .priority-high {
+      border-left-color: #ff5252;
+    }
+    
+    .priority-medium {
+      border-left-color: var(--accent-gold);
+    }
+    
+    .priority-low {
+      border-left-color: #66bb6a;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    
+    .badge-high {
+      background: #ff5252;
+      color: white;
+    }
+    
+    .badge-medium {
+      background: var(--accent-gold);
+      color: var(--bg);
+    }
+    
+    .badge-low {
+      background: #66bb6a;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Wiki: Гексовый прилив</h1>
+  <p class="subtitle">Полная документация по игре Tidal Hex</p>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('functions')"> Функции и формулы</button>
+    <button class="tab" onclick="showTab('flowcharts')">🔄 Блок-схемы</button>
+    <button class="tab" onclick="showTab('palette')">🎨 Палитра</button>
+    <button class="tab" onclick="showTab('optimization')"> Оптимизация</button>
+  </div>
+
+  <!-- FUNCTIONS TAB -->
+  <div id="functions" class="tab-content active">
+    <h2>Утилиты и математические функции</h2>
+    
+    <h3>clamp(value, min, max)</h3>
+    <p>Ограничивает значение в заданном диапазоне</p>
+    <pre><code>const clamp = (v, a, b) => Math.max(a, Math.min(b, v));</code></pre>
+    <table class="param-table">
+      <tr><th>Параметр</th><th>Тип</th><th>Описание</th></tr>
+      <tr><td>v</td><td>number</td><td>Значение для ограничения</td></tr>
+      <tr><td>a</td><td>number</td><td>Минимальное значение</td></tr>
+      <tr><td>b</td><td>number</td><td>Максимальное значение</td></tr>
+    </table>
+
+    <h3>lerp(a, b, t)</h3>
+    <p>Линейная интерполяция между двумя значениями</p>
+    <pre><code>const lerp = (a, b, t) => a + (b - a) * t;</code></pre>
+    <table class="param-table">
+      <tr><th>Параметр</th><th>Описание</th></tr>
+      <tr><td>a</td><td>Начальное значение</td></tr>
+      <tr><td>b</td><td>Конечное значение</td></tr>
+      <tr><td>t</td><td>Коэффициент интерполяции (0-1)</td></tr>
+    </table>
+
+    <h3>smoothstep(a, b, x)</h3>
+    <p>Плавная интерполяция с easing-функцией</p>
+    <pre><code>const smoothstep = (a, b, x) => {
+  const t = clamp((x - a) / (b - a), 0, 1);
+  return t * t * (3 - 2 * t);
+};</code></pre>
+    <p><strong>Алгоритм:</strong> Использует полином Эрмита для плавного перехода</p>
+
+    <h3>expDamp(current, target, lambda, dt)</h3>
+    <p>Экспоненциальное затухание для плавного приближения к цели</p>
+    <pre><code>const expDamp = (current, target, lambda, dt) =>
+  current + (target - current) * (1 - Math.exp(-lambda * dt));</code></pre>
+    <table class="param-table">
+      <tr><th>Параметр</th><th>Описание</th></tr>
+      <tr><td>current</td><td>Текущее значение</td></tr>
+      <tr><td>target</td><td>Целевое значение</td></tr>
+      <tr><td>lambda</td><td>Скорость затухания (больше = быстрее)</td></tr>
+      <tr><td>dt</td><td>Дельта времени (секунды)</td></tr>
+    </table>
+
+    <h3>dampAngle(current, target, lambda, dt)</h3>
+    <p>Плавное вращение угла с учётом кратчайшего пути</p>
+    <pre><code>const dampAngle = (current, target, lambda, dt) => {
+  const delta = Math.atan2(
+    Math.sin(target - current),
+    Math.cos(target - current)
+  );
+  return current + delta * (1 - Math.exp(-lambda * dt));
+};</code></pre>
+    <p><strong>Алгоритм:</strong> Использует atan2 для нахождения кратчайшего угла поворота</p>
+
+    <h2>Генерация шума</h2>
+
+    <h3>mulberry32(seed)</h3>
+    <p>Детерминированный генератор псевдослучайных чисел</p>
+    <pre><code>function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function random() {
+    a |= 0;
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}</code></pre>
+    <p><strong>Алгоритм:</strong> Mulberry32 - быстрый 32-битный генератор с периодом 2^32</p>
+
+    <h3>hash2(x, z)</h3>
+    <p>Хеш-функция для 2D координат</p>
+    <pre><code>function hash2(x, z) {
+  const v = Math.sin(x * 127.1 + z * 311.7) * 43758.5453123;
+  return v - Math.floor(v);
+}</code></pre>
+
+    <h3>valueNoise(x, z)</h3>
+    <p>Value Noise - процедурный шум для генерации ландшафта</p>
+    <pre><code>function valueNoise(x, z) {
+  const xi = Math.floor(x);
+  const zi = Math.floor(z);
+  const xf = x - xi;
+  const zf = z - zi;
+  const u = xf * xf * (3 - 2 * xf);
+  const v = zf * zf * (3 - 2 * zf);
+  const a = hash2(xi, zi);
+  const b = hash2(xi + 1, zi);
+  const c = hash2(xi, zi + 1);
+  const d = hash2(xi + 1, zi + 1);
+  return lerp(lerp(a, b, u), lerp(c, d, u), v);
+}</code></pre>
+    <p><strong>Алгоритм:</strong> Билинейная интерполяция хешей с easing-функцией</p>
+
+    <h2>Генерация карты</h2>
+
+    <h3>columnLocalPositions(tx, tz)</h3>
+    <p>Вычисляет позиции 25 гексов в тайле 5×5</p>
+    <pre><code>function columnLocalPositions(tx, tz) {
+  const out = [];
+  for (let row = 0; row < 5; row++) {
+    const globalRow = tz * 5 + row;
+    for (let col = 0; col < 5; col++) {
+      const x = tileX(tx) + (col - 2) * HEX_SX +
+                (globalRow % 2 ? HEX_SX * 0.5 : 0) - HEX_SX * 0.25;
+      const z = tileZ(tz) + (row - 2) * HEX_SZ;
+      out.push({ x, z });
+    }
+  }
+  return out;
+}</code></pre>
+    <p><strong>Параметры:</strong></p>
+    <ul>
+      <li><code>HEX_SX = SQRT3 * HEX_R</code> - ширина гекса</li>
+      <li><code>HEX_SZ = 1.5 * HEX_R</code> - высота гекса</li>
+      <li><code>TILE_W = 5 * HEX_SX</code> - ширина тайла</li>
+      <li><code>TILE_D = 7.5 * HEX_R</code> - глубина тайла</li>
+    </ul>
+
+    <h3>terrainForColumn(worldX, worldZ, tile)</h3>
+    <p>Вычисляет высоту и цвет для каждого гекса на основе расстояния до центра острова</p>
+    <pre><code>function terrainForColumn(worldX, worldZ, tile) {
+  const island = tile.island;
+  const dist = Math.hypot(worldX - island.x, worldZ - island.z);
+  const q = clamp(dist / island.r, 0, 1);
+  
+  // Микро-рельеф (шум)
+  const micro = valueNoise(worldX * 2.05 + island.seed * 4.1, worldZ * 2.05) * 0.58 +
+                valueNoise(worldX * 6.3, worldZ * 6.3 - island.seed) * 0.22;
+  
+  // Поднятие пика
+  const peakRange = island.r * 0.5;
+  const peakT = clamp(1 - dist / peakRange, 0, 1);
+  const peakRise = (3.15 + island.r * 0.24) * island.peak * Math.pow(peakT, 1.62);
+  
+  // Зоны по расстоянию
+  if (q > 0.79) { /* песок */ }
+  else if (q > 0.56) { /* трава */ }
+  else if (q > 0.39) { /* холмы */ }
+  else { /* скалы */ }
+}</code></pre>
+    <p><strong>Зоны:</strong></p>
+    <table class="param-table">
+      <tr><th>q (норм. расстояние)</th><th>Зона</th><th>Высота</th></tr>
+      <tr><td>> 0.79</td><td>Песок</td><td>0.3 + micro * 0.14</td></tr>
+      <tr><td>> 0.56</td><td>Трава</td><td>0.54 + micro * 0.17</td></tr>
+      <tr><td>> 0.39</td><td>Холмы</td><td>0.84 + micro * 0.29</td></tr>
+      <tr><td>≤ 0.39</td><td>Скалы</td><td>1.08 + micro * 0.35</td></tr>
+    </table>
+
+    <h2>Физика лодки</h2>
+
+    <h3>updateBoat(dt, time)</h3>
+    <p>Обновляет позицию, скорость и анимацию лодки</p>
+    <pre><code>function updateBoat(dt, time) {
+  // Управление курсом через WASD
+  const dir = new THREE.Vector2();
+  dir.addScaledVector(keyVectors.right, ix);
+  dir.addScaledVector(keyVectors.forward, iz);
+  
+  // Плавный поворот
+  state.boat.heading = dampAngle(
+    state.boat.heading,
+    targetHeading,
+    6.2, dt
+  );
+  
+  // Ускорение/торможение
+  state.boatSpeed = expDamp(
+    state.boatSpeed,
+    targetSpeed,
+    speedLambda, dt
+  );
+  
+  // Движение с проверкой столкновений
+  if (canSail(nextX, state.boat.z)) {
+    state.boat.x = nextX;
+  }
+  
+  // Анимация качки
+  const wave = sampleAmbientWave(state.boat.x, state.boat.z, time);
+  const bob = Math.sin(time * 1.7) * 0.032;
+  boatVisual.root.position.y = 0.49 + wave * 0.65 + bob;
+}</code></pre>
+
+    <h3>canSail(x, z)</h3>
+    <p>Проверяет, можно ли плыть в данной точке (нет ли суши)</p>
+    <pre><code>function canSail(x, z) {
+  const margin = 0.68;
+  if (x < -MAP_W / 2 + margin || x > MAP_W / 2 - margin) return false;
+  
+  const r = 0.67;
+  for (let i = 0; i < 10; i++) {
+    const a = (i / 10) * TAU;
+    if (isLandPoint(x + Math.cos(a) * r, z + Math.sin(a) * r)) return false;
+  }
+  return true;
+}</code></pre>
+    <p><strong>Алгоритм:</strong> Проверяет 10 точек по окружности радиусом 0.67 вокруг лодки</p>
+
+    <h2>Система ветра</h2>
+
+    <h3>getWindAt(x, z)</h3>
+    <p>Возвращает вектор ветра в конкретной точке мира</p>
+    <pre><code>function getWindAt(x, z) {
+  const localOffset = (valueNoise(
+    x * wind.noiseScale + 7.1,
+    z * wind.noiseScale + 3.3
+  ) - 0.5) * 2 * wind.noiseSpread;
+  
+  const angle = wind.angle + localOffset;
+  const strength = wind.strength * localStrength;
+  
+  return {
+    x: Math.sin(angle) * strength,
+    z: Math.cos(angle) * strength,
+    angle,
+    strength
+  };
+}</code></pre>
+    <table class="param-table">
+      <tr><th>Параметр</th><th>Значение</th><th>Описание</th></tr>
+      <tr><td>noiseScale</td><td>0.035</td><td>Масштаб шумового поля</td></tr>
+      <tr><td>noiseSpread</td><td>0.45</td><td>Макс. отклонение (~25°)</td></tr>
+      <tr><td>driftFactor</td><td>0.32</td><td>Сила сноса лодки</td></tr>
+    </table>
+
+    <h3>updateWind(dt)</h3>
+    <p>Плавная смена направления и силы ветра (сезонность)</p>
+    <pre><code>function updateWind(dt) {
+  wind.seasonTimer += dt;
+  if (wind.seasonTimer > wind.seasonDuration) {
+    wind.seasonTimer = 0;
+    const turn = (Math.random() - 0.5) * Math.PI * 0.9;
+    wind.targetAngle += turn;
+    wind.targetStrength = 0.25 + Math.random() * 0.65;
+    wind.seasonDuration = 40 + Math.random() * 40;
+  }
+  
+  // Плавная интерполяция
+  wind.angle += delta * (1 - Math.exp(-0.09 * dt));
+  wind.strength += (target - current) * (1 - Math.exp(-0.12 * dt));
+}</code></pre>
+
+    <h2>Шейдер океана</h2>
+
+    <h3>Vertex Shader - волны</h3>
+    <pre><code>float ambient = sin(uTime * 1.08 + instXZ.x * 0.53 + instXZ.y * 0.21 + aPhase) * 0.073
+              + sin(uTime * 1.63 - instXZ.x * 0.29 + instXZ.y * 0.82 + 0.9 + aPhase * 0.31) * 0.037;
+
+// Возмущение от лодки
+float hull = exp(-boatD2 * 1.25);
+float bow = exp(-bowD * bowD * 4.54);
+target += -0.255 * hull * speedK;  // вмятина под днищем
+target += 0.235 * bow * speedK;    // носовая волна
+
+// Шлейф
+float ripple = sin(td * 7.4 - age * 9.2) * exp(-td * 1.24);
+target += ripple * 0.108 * decay;
+
+float wave = clamp(target, -0.33, 0.5);
+transformed.y += wave / 2.3;</code></pre>
+
+    <h3>Fragment Shader - цвет воды</h3>
+    <pre><code>float depthT = clamp((vWave + 0.18) / 0.42, 0.0, 1.0);
+vec3 water = mix(uDeep, uMid, smoothstep(0.0, 0.52, depthT));
+water = mix(water, uCrest, smoothstep(0.5, 1.0, depthT));
+
+// Пена
+if (vWave > 0.075) {
+  water = mix(water, uFoamColor, smoothstep(0.09, 0.33, vWave) * 0.54);
+}</code></pre>
+  </div>
+
+  <!-- FLOWCHARTS TAB -->
+  <div id="flowcharts" class="tab-content">
+    <h2>Главный игровой цикл</h2>
+    <div class="flowchart">
+      <div class="flow-row">
+        <div class="flow-node">animate()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">clock.getDelta()</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">updateBoat()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">recordTrail()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">updateOcean()</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">updateWakeRibbon()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">emitWakeParticles()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">updateParticles()</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">updateCollectibles()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">updateMotes()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">updateStatus()</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">updateCamera()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">renderer.render()</div>
+      </div>
+    </div>
+
+    <h2>Генерация карты</h2>
+    <div class="flowchart">
+      <div class="flow-row">
+        <div class="flow-node">Инициализация</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">Создание сетки NX×NZ</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">Для каждого тайла</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">Попадание в остров?</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓ да</div>
+        <div class="flow-arrow" style="margin-left: 100px;">↓ нет</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">landTiles.push()</div>
+        <div class="flow-node process">oceanCols.push()</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">terrainForColumn()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">Вычисление высоты</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">Определение зоны</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">Создание InstancedMesh</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">landMesh / oceanMesh</div>
+      </div>
+    </div>
+
+    <h2>Физика лодки</h2>
+    <div class="flowchart">
+      <div class="flow-row">
+        <div class="flow-node">WASD ввод</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">Вычисление dir</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node decision">hasInput?</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓ да</div>
+        <div class="flow-arrow" style="margin-left: 100px;">↓ нет</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">dampAngle(heading)</div>
+        <div class="flow-node process">expDamp(turnRate, 0)</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">expDamp(boatSpeed)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">selfVx, selfVz</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">getWindAt()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">driftVx, driftVz</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">desiredV = selfV + driftV</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">expDamp(vx, desiredVx)</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node decision">canSail?</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓ да</div>
+        <div class="flow-arrow" style="margin-left: 100px;">↓ нет</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">boat.x = nextX</div>
+        <div class="flow-node process">vx *= -0.15</div>
+      </div>
+    </div>
+
+    <h2>Система частиц</h2>
+    <div class="flowchart">
+      <div class="flow-row">
+        <div class="flow-node">emitWakeParticles()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">boatSpeed > 0.6?</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓ да</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">spawnParticle()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">particleCursor++</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">updateParticles()</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">life > 0?</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓ да</div>
+        <div class="flow-arrow" style="margin-left: 100px;">↓ нет</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">life -= dt</div>
+        <div class="flow-node process">position = -100</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node process">dragFactor = exp(-drag * dt)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node process">vx *= dragFactor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PALETTE TAB -->
+  <div id="palette" class="tab-content">
+    <h2>🎨 Цветовая палитра игры</h2>
+    <p class="subtitle">Все цвета определены в объекте <code>palette</code> в game.js</p>
+    
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: #042c36;"></div>
+        <div class="color-name">deep</div>
+        <div class="color-hex">#042c36</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Глубокий океан</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #17666d;"></div>
+        <div class="color-name">mid</div>
+        <div class="color-hex">#17666d</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Средняя глубина</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #8fdbc2;"></div>
+        <div class="color-name">crest</div>
+        <div class="color-hex">#8fdbc2</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Гребень волны</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #eff7df;"></div>
+        <div class="color-name">foam</div>
+        <div class="color-hex">#eff7df</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Пена</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #d8b977;"></div>
+        <div class="color-name">sand</div>
+        <div class="color-hex">#d8b977</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Песок</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #efd9a0;"></div>
+        <div class="color-name">sandLight</div>
+        <div class="color-hex">#efd9a0</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Светлый песок</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #4f8b51;"></div>
+        <div class="color-name">grass</div>
+        <div class="color-hex">#4f8b51</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Трава</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #73a758;"></div>
+        <div class="color-name">grassLight</div>
+        <div class="color-hex">#73a758</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Светлая трава</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #afd185;"></div>
+        <div class="color-name">hillLight</div>
+        <div class="color-hex">#afd185</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Светлые холмы</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #7f877f;"></div>
+        <div class="color-name">rock</div>
+        <div class="color-hex">#7f877f</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Скалы</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #606b66;"></div>
+        <div class="color-name">rockDark</div>
+        <div class="color-hex">#606b66</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Тёмные скалы</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #e7ede2;"></div>
+        <div class="color-name">snow</div>
+        <div class="color-hex">#e7ede2</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Снег на пиках</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #f1cf8c;"></div>
+        <div class="color-name">gold</div>
+        <div class="color-hex">#f1cf8c</div>
+        <div style="color: var(--text-dim); font-size: 0.85em; margin-top: 5px;">Золото (искры)</div>
+      </div>
+    </div>
+
+    <h2>Цвета UI (CSS переменные)</h2>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: #05161b;"></div>
+        <div class="color-name">--bg-deep</div>
+        <div class="color-hex">#05161b</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #0a2931;"></div>
+        <div class="color-name">--bg-sea</div>
+        <div class="color-hex">#0a2931</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #f1ecdb;"></div>
+        <div class="color-name">--cream</div>
+        <div class="color-hex">#f1ecdb</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #e8c583;"></div>
+        <div class="color-name">--gold</div>
+        <div class="color-hex">#e8c583</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #f6dda5;"></div>
+        <div class="color-name">--gold-bright</div>
+        <div class="color-hex">#f6dda5</div>
+      </div>
+      
+      <div class="color-card">
+        <div class="color-swatch" style="background: #7ed0c1;"></div>
+        <div class="color-name">--teal</div>
+        <div class="color-hex">#7ed0c1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTIMIZATION TAB -->
+  <div id="optimization" class="tab-content">
+    <h2>⚡ Анализ оптимизации</h2>
+    <p class="subtitle">Вопросы и рекомендации по улучшению производительности</p>
+
+    <div class="opt-item priority-high">
+      <h4> Генерация геометрии в реальном времени <span class="badge badge-high">Высокий приоритет</span></h4>
+      <p><strong>Проблема:</strong> Кораблик, маяк, коттеджи и пальмы генерируются процедурно каждый раз при загрузке через функции <code>createBoat()</code>, <code>createCottage()</code>, <code>createPalm()</code>.</p>
+      <ul>
+        <li><strong>Вопрос:</strong> Нужен ли перевод в 3D-модели (GLTF/OBJ)?</li>
+        <li><strong>Ответ:</strong> ДА, если количество объектов > 50. Для 1-2 объектов процедурная генерация приемлема.</li>
+        <li><strong>Рекомендация:</strong> Экспортировать в GLTF и загружать через <code>GLTFLoader</code>. Это снизит время инициализации на 30-50%.</li>
+        <li><strong>Альтернатива:</strong> Кэшировать геометрию и переиспользовать через <code>clone()</code></li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-high">
+      <h4>🔴 Гексовые столбики в квадратных тайлах <span class="badge badge-high">Высокий приоритет</span></h4>
+      <p><strong>Проблема:</strong> Каждый тайл 5×5 содержит 25 гексов, но тайлы прямоугольные. Это создаёт "ступенчатые" границы островов.</p>
+      <ul>
+        <li><strong>Вопрос:</strong> Нужно ли заменять на чистую гексовую сетку?</li>
+        <li><strong>Ответ:</strong> ДА, если важна визуальная точность. НО это увеличит сложность кода в 2-3 раза.</li>
+        <li><strong>Текущее решение:</strong> Функция <code>wobble</code> в <code>terrainForColumn</code> создаёт иллюзию неровного берега</li>
+        <li><strong>Рекомендация:</strong> Оставить как есть для прототипа. Для релиза - перейти на axial/cube координаты гексов</li>
+        <li><strong>Формула перехода:</strong> <code>x = q * (sqrt(3) * size + 3/2 * size)</code>, <code>z = r * (3/2 * size)</code></li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-medium">
+      <h4>🟡 Процедурная генерация vs предустановленные острова <span class="badge badge-medium">Средний приоритет</span></h4>
+      <p><strong>Проблема:</strong> Острова генерируются процедурно через <code>ISLANDS</code> массив с параметрами <code>{x, z, r, seed, peak}</code></p>
+      <ul>
+        <li><strong>Вопрос:</strong> Нужна ли процедурная генерация?</li>
+        <li><strong>Ответ:</strong> ЗАВИСИТ от целей:</li>
+        <ul>
+          <li>Для фиксированной карты (Карибы) - НЕТ, лучше расставить вручную</li>
+          <li>Для roguelike/рандомных карт - ДА, оставить процедурную</li>
+        </ul>
+        <li><strong>Рекомендация:</strong> Гибридный подход - основные острова вручную, мелкие детали процедурно</li>
+        <li><strong>Оптимизация:</strong> Кэшировать результат генерации в <code>localStorage</code> для повторных загрузок</li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-medium">
+      <h4>🟡 InstancedMesh vs отдельные меши <span class="badge badge-medium">Средний приоритет</span></h4>
+      <p><strong>Текущее состояние:</strong> Океан и земля используют <code>InstancedMesh</code> (хорошо!)</p>
+      <ul>
+        <li><strong>Проблема:</strong> Деревья, камни, пальмы - отдельные <code>Group</code> объекты</li>
+        <li><strong>Вопрос:</strong> Нужно ли переводить в InstancedMesh?</li>
+        <li><strong>Ответ:</strong> ДА, если количество > 100. Сейчас ~50 деревьев - приемлемо</li>
+        <li><strong>Рекомендация:</strong> Для > 200 объектов использовать <code>InstancedMesh</code> с <code>setMatrixAt()</code></li>
+        <li><strong>Пример:</strong> <code>treeSpots.forEach((tree, i) => { treeDummy.position.set(...); trees.setMatrixAt(i, treeDummy.matrix); })</code></li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-medium">
+      <h4>🟡 Шейдер океана - пересборка при смене ветра <span class="badge badge-medium">Средний приоритет</span></h4>
+      <p><strong>Проблема:</strong> В шейдере океана используются JS-переменные через template literal:</p>
+      <pre><code>float windX = ${Math.sin(wind.angle).toFixed(3)};
+float windZ = ${Math.cos(wind.angle).toFixed(3)};</code></pre>
+      <ul>
+        <li><strong>Вопрос:</strong> Нужно ли использовать uniform-переменные?</li>
+        <li><strong>Ответ:</strong> ДА, если ветер меняется часто. Сейчас шейдер пересобирается каждый кадр!</li>
+        <li><strong>Рекомендация:</strong> Добавить uniform <code>uWindDirection</code> и обновлять через <code>shader.uniforms.uWindDirection.value</code></li>
+        <li><strong>Экономия:</strong> ~2-5 мс на кадр при частой смене ветра</li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-low">
+      <h4>🟢 Размер карты и количество тайлов <span class="badge badge-low">Низкий приоритет</span></h4>
+      <p><strong>Текущие параметры:</strong></p>
+      <pre><code>const NX = 100;  // тайлов по X
+const NZ = 40;   // тайлов по Z
+const HEX_R = 0.155;
+// Итого: 100 * 40 * 25 = 100,000 гексов</code></pre>
+      <ul>
+        <li><strong>Вопрос:</strong> Можно ли уменьшить?</li>
+        <li><strong>Ответ:</strong> ДА, если острова занимают малую часть карты</li>
+        <li><strong>Рекомендация:</strong> Адаптивный LOD - меньше тайлов вдали от лодки</li>
+        <li><strong>Формула:</strong> <code>if (distFromBoat > 50) skipTile;</code></li>
+        <li><strong>Экономия:</strong> До 60% гексов если лодка в центре</li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-low">
+      <h4>🟢 Система частиц - фиксированный пул <span class="badge badge-low">Низкий приоритет</span></h4>
+      <p><strong>Текущее состояние:</strong> <code>particleCount = 180</code> с кольцевым буфером</p>
+      <ul>
+        <li><strong>Вопрос:</strong> Достаточно ли 180 частиц?</li>
+        <li><strong>Ответ:</strong> ДА для текущего геймплея. НО можно динамически менять</li>
+        <li><strong>Рекомендация:</strong> Адаптивное количество: <code>particleCount = baseCount * qualitySetting</code></li>
+        <li><strong>Оптимизация:</strong> Использовать <code>BufferGeometry</code> с <code>setDrawRange()</code> вместо скрытия частиц</li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-low">
+      <h4>🟢 Тени и освещение <span class="badge badge-low">Низкий приоритет</span></h4>
+      <p><strong>Текущие настройки:</strong></p>
+      <pre><code>sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -27;
+sun.shadow.camera.right = 27;</code></pre>
+      <ul>
+        <li><strong>Вопрос:</strong> Можно ли уменьшить разрешение теней?</li>
+        <li><strong>Ответ:</strong> ДА, для мобильных устройств до 1024×1024</li>
+        <li><strong>Рекомендация:</strong> Динамическое качество: <code>shadowMapSize = isMobile ? 1024 : 2048</code></li>
+        <li><strong>Экономия:</strong> ~30% GPU времени на тенях</li>
+      </ul>
+    </div>
+
+    <div class="opt-item priority-low">
+      <h4>🟢 Звуковая система <span class="badge badge-low">Низкий приоритет</span></h4>
+      <p><strong>Текущее состояние:</strong> Web Audio API с процедурной генерацией шума океана</p>
+      <ul>
+        <li><strong>Вопрос:</strong> Нужна ли процедурная генерация звука?</li>
+        <li><strong>Ответ:</strong> НЕТ, лучше использовать готовые сэмплы</li>
+        <li><strong>Рекомендация:</strong> Загрузить MP3/OGG файлы через <code>AudioLoader</code></li>
+        <li><strong>Экономия:</strong> Меньше CPU нагрузки, лучше качество звука</li>
+      </ul>
+    </div>
+
+    <h2>📊 Сводная таблица оптимизаций</h2>
+    <table class="param-table">
+      <tr>
+        <th>Оптимизация</th>
+        <th>Приоритет</th>
+        <th>Сложность</th>
+        <th>Эффект</th>
+      </tr>
+      <tr>
+        <td>GLTF модели вместо процедурных</td>
+        <td><span class="badge badge-high">Высокий</span></td>
+        <td>Средняя</td>
+        <td>-30-50% время загрузки</td>
+      </tr>
+      <tr>
+        <td>Чистая гексовая сетка</td>
+        <td><span class="badge badge-high">Высокий</span></td>
+        <td>Высокая</td>
+        <td>+визуальное качество</td>
+      </tr>
+      <tr>
+        <td>Uniform для ветра в шейдере</td>
+        <td><span class="badge badge-medium">Средний</span></td>
+        <td>Низкая</td>
+        <td>+2-5 мс/кадр</td>
+      </tr>
+      <tr>
+        <td>InstancedMesh для декораций</td>
+        <td><span class="badge badge-medium">Средний</span></td>
+        <td>Средняя</td>
+        <td>-40% draw calls</td>
+      </tr>
+      <tr>
+        <td>LOD для дальних тайлов</td>
+        <td><span class="badge badge-low">Низкий</span></td>
+        <td>Высокая</td>
+        <td>-60% гексов</td>
+      </tr>
+      <tr>
+        <td>Динамическое качество теней</td>
+        <td><span class="badge badge-low">Низкий</span></td>
+        <td>Низкая</td>
+        <td>-30% GPU на тенях</td>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabId).classList.add('active');
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
