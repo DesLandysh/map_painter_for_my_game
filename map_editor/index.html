@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidal Hex — редактор карт</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== TOOLBAR ===================== -->
+<header id="toolbar">
+  <div class="brand">🗺️ Tidal&nbsp;Hex <span>Map Editor</span></div>
+
+  <div class="tgroup">
+    <button id="btnNew" class="btn" title="Новая пустая карта">✨ Новая</button>
+    <button id="btnOpen" class="btn" title="Открыть .hexmap.json и редактировать">📂 Открыть карту</button>
+    <input type="file" id="fileMap" accept=".json,.hexmap,application/json" hidden>
+  </div>
+
+  <div class="tgroup">
+    <button id="btnImg" class="btn" title="Открыть изображение и превратить его в карту">🖼️ Изображение → карта</button>
+    <input type="file" id="fileImg" accept="image/*" hidden>
+  </div>
+
+  <div class="tgroup">
+    <button id="btnSave" class="btn primary" title="Сохранить карту в файл .hexmap.json">💾 Сохранить</button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- переключатель режимов отображения: preview (top-down) / iso (облёт) -->
+  <div class="tgroup seg" role="tablist" aria-label="Режим отображения карты">
+    <button id="segPreview" class="segbtn active" data-mode="preview">Top-down</button>
+    <button id="segFly"    class="segbtn" data-mode="fly">✈ облёт</button>
+    <button id="segIso"    class="segbtn" data-mode="iso">Изометрия</button>
+  </div>
+
+  <div class="tgroup">
+    <button id="btnTransition" class="btn accent" title="Плавный облёт карты с переходом в изометрический вид">▶ Финальный изометрический вид</button>
+  </div>
+</header>
+
+<!-- ===================== MAIN LAYOUT ===================== -->
+<main id="layout">
+
+  <!-- панель инструментов слева -->
+  <aside id="palette">
+    <h2>Инструменты</h2>
+    <div class="tools">
+      <button class="tool active" data-tool="select" title="Выбор острова / тайла"><b>Указатель</b><span>выбор · перемещение</span></button>
+      <button class="tool" data-tool="erase" title="Ластик — убрать остров с тайлов"><b>Ластик</b><span>удалить острова</span></button>
+      <div class="divider"></div>
+      <div class="paltitle">Разместить остров по типу:</div>
+      <button class="tool paint" data-tool="paint" data-type="jungle"><i style="--c:#2e7d3f"></i><b>Джунгли</b><span>холмы · пальмы</span></button>
+      <button class="tool paint" data-tool="paint" data-type="savanna"><i style="--c:#c9a648"></i><b>Саванна</b><span>травы · кусты</span></button>
+      <button class="tool paint" data-tool="paint" data-type="arid"><i style="--c:#d8b06a"></i><b>Аридный</b><span>скалы · кактусы</span></button>
+      <button class="tool paint" data-tool="paint" data-type="volcanic"><i style="--c:#5d4037"></i><b>Вулканический</b><span>пепел · конус</span></button>
+      <button class="tool paint" data-tool="paint" data-type="coral"><i style="--c:#ef9a9a"></i><b>Коралловый</b><span>низкий атол</span></button>
+      <button class="tool paint" data-tool="paint" data-type="mangrove"><i style="--c:#4f7a56"></i><b>Мангры</b><span>топи · ризоиды</span></button>
+      <button class="tool paint" data-tool="paint" data-type="beach"><i style="--c:#f2e3b2"></i><b>Пляжный</b><span>песок · кокосы</span></button>
+      <div class="divider"></div>
+      <label class="chk"><input type="checkbox" id="optGrid" checked> сетка гексов</label>
+      <label class="chk"><input type="checkbox" id="optWire" checked> каркас тайлов (draw-call тест)</label>
+      <label class="chk"><input type="checkbox" id="optWater" checked> вода</label>
+      <label class="chk"><input type="checkbox" id="optFrustum" checked> отсечение вне камеры</label>
+    </div>
+    <div class="palthint">
+      ЛКМ — применить инструмент.<br>
+      ЛКМ-тянуть — «кисть»/рамка выделения.<br>
+      Колесо — приблизить. ПКМ-тянуть — сдвиг камеры.<br>
+      Shift+колесо — изменить масштаб (zoom).
+    </div>
+  </aside>
+
+  <!-- сцена -->
+  <section id="stage">
+    <canvas id="view"></canvas>
+
+    <!-- счётчик FPS / draw calls / объекты -->
+    <div id="stats" title="FPS · draw calls (renderer.info.render.calls) · объекты на карте (scene children)">
+      <div class="srow"><b id="stFps">–</b><span>fps</span></div>
+      <div class="srow"><b id="stCalls">–</b><span>draw calls</span></div>
+      <div class="srow"><b id="stObjs">–</b><span>объектов</span></div>
+      <div class="srow dim"><b id="stTris">–</b><span>треугольников</span></div>
+      <div class="srow dim"><b id="stVis">–</b><span>видимых мешей</span></div>
+    </div>
+
+    <div id="modeBadge">PREVIEW · top-down</div>
+    <div id="hint"></div>
+  </section>
+
+  <!-- панель свойств справа -->
+  <aside id="inspector" class="hidden">
+    <div class="insp-head">
+      <h2 id="inspTitle">Свойства острова</h2>
+      <button id="inspClose" title="Закрыть">✕</button>
+    </div>
+
+    <div class="field">
+      <label>Тип ландшафта</label>
+      <select id="pType"></select>
+    </div>
+
+    <div class="grid2">
+      <div class="field"><label>Радиус <output id="oRadius"></output></label>
+        <input type="range" id="pRadius" min="0.4" max="3.4" step="0.05"></div>
+      <div class="field"><label>Высота <output id="oHeight"></output></label>
+        <input type="range" id="pHeight" min="0.1" max="2.6" step="0.05"></div>
+      <div class="field"><label>Шероховатость <output id="oRough"></output></label>
+        <input type="range" id="pRough" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>Резкость берега <output id="oBeach"></output></label>
+        <input type="range" id="pBeach" min="0.05" max="0.9" step="0.05"></div>
+      <div class="field"><label>Плодородие <output id="oVeg"></output></label>
+        <input type="range" id="pVeg" min="0" max="1" step="0.05"></div>
+      <div class="field"><label>Северность <output id="oNorth"></output></label>
+        <input type="range" id="pNorth" min="0" max="6.28" step="0.01"></div>
+    </div>
+
+    <div class="field row">
+      <label>Туманный валун</label><input type="checkbox" id="pBoulder">
+      <label style="margin-left:auto">Вершина</label><input type="checkbox" id="pPeak">
+    </div>
+
+    <div class="swatches" id="pSwatches" title="Основной цвет"></div>
+
+    <div class="field"><label>Название</label><input type="text" id="pName" maxlength="40"></div>
+
+    <div class="insp-actions">
+      <button id="btnDup" class="btn">⧉ Дублировать</button>
+      <button id="btnDel" class="btn danger">🗑 Удалить</button>
+    </div>
+
+    <div class="meta" id="pMeta"></div>
+  </aside>
+</main>
+
+<!-- модальное окно «изображение → карта» -->
+<div id="imgModal" class="modal hidden">
+  <div class="modal-card">
+    <h2>Изображение → карта</h2>
+    <div class="preview-row">
+      <canvas id="imgPrev" width="220" height="150"></canvas>
+      <div class="previnfo">
+        <div id="imgName">—</div>
+        <div id="imgSize" class="dim">—</div>
+        <div class="dim small">Светлые пиксели становятся сушей: чем ярче участок, тем выше остров.</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Макс. островов <output id="oMaxIsl"></output></label>
+        <input type="range" id="pMaxIsl" min="1" max="24" step="1"></div>
+      <div class="field"><label>Чувствительность <output id="oSens"></output></label>
+        <input type="range" id="pSens" min="0.05" max="0.95" step="0.01"></div>
+      <div class="field"><label>Мин. размер <output id="oMinSz"></output></label>
+        <input type="range" id="pMinSz" min="1" max="12" step="1"></div>
+      <div class="field"><label>Макс. радиус <output id="oMaxR"></output></label>
+        <input type="range" id="pMaxR" min="0.6" max="3" step="0.05"></div>
+    </div>
+    <div class="field row"><label>Острова только на воде (не поверх существующих)</label><input type="checkbox" id="pOnlyWater" checked></div>
+    <div class="modal-actions">
+      <button id="imgCancel" class="btn">Отмена</button>
+      <button id="imgApply" class="btn primary">Создать карту</button>
+    </div>
+  </div>
+</div>
+
+<script src="three/three.min.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>
